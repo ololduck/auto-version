@@ -1,3 +1,4 @@
+#!c:\Python27\python.exe
 # -*- coding:utf8 -*-
 
 import sys
@@ -5,9 +6,9 @@ import os
 import json
 import re
 
-VERSION = "0.1.1"
+VERSION = "0.1.2"
 
-CONF_FILENAME = "pyrelease.conf"
+CONF_FILENAME = "version.conf"
 
 FORMAT = r'\d+\.\d+\.\d+\-\d+'  # <major>.<minor>.<patch>-<build>
 
@@ -15,6 +16,7 @@ BUILD = 3
 PATCH = 2
 MINOR = 1
 MAJOR = 0
+
 
 class Conf:
     """
@@ -54,6 +56,7 @@ class Conf:
             print("Found no config file. Generating. And please review it after that, it doesn't suits your needs. (Guaranteed, whichever they are)")
             sys.exit(1)
 
+
 def split_version_string(version_string):
     if(version_string.find('-') > -1):
         version = version_string.split('-')
@@ -62,6 +65,7 @@ def split_version_string(version_string):
     else:
         v = version_string.split('.')
     return v
+
 
 def join_version_string(v):
     version = ""
@@ -76,6 +80,7 @@ def join_version_string(v):
         version = version[:-1]
 
     return version
+
 
 def incr(what, version):
     try:
@@ -102,6 +107,7 @@ def perform_version_incr(what, match, content, f):
     f.write(content)
     return new_version_string
 
+
 def incr_version(conf, what=BUILD):
     i = 0
     for elem in conf["files"]:
@@ -116,23 +122,22 @@ def incr_version(conf, what=BUILD):
                             elem["last_version"] = perform_version_incr(what, m, content, f)
                             elem["position_of_match"] = match.index(m)
                             conf["files"][i] = elem
-                            return conf
                 else:
                     if("position_of_match" in elem):
                         # check to position
                         m = match[elem["position_of_match"]]
                         conf["last_version"] = perform_version_incr(what, m, content, f)
                         conf["files"][i] = elem
-                        return conf
                     else:
                         m = match[0]
                         conf["last_version"] = perform_version_incr(what, m, content, f)
                         conf["files"][i] = elem
-                        return conf
             else:
                 print("ERROR: FOUND NO MATCH FOR PATTERN %s in file %s" % (elem["pattern"], elem["path"]))
                 sys.exit(1)
         i += 1
+    return conf
+
 
 def prepare_release():
     pass  # delete the build number from version number
@@ -143,7 +148,7 @@ if __name__ == '__main__':
     config = c.get()
     arg = sys.argv[1]
     if(arg == "build"):
-         lvl = BUILD
+        lvl = BUILD
     elif(arg == "patch"):
         lvl = PATCH
     elif(arg == "minor"):
