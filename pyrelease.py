@@ -5,7 +5,7 @@ import os
 import json
 import re
 
-VERSION = "0.0.0"
+VERSION = "0.1.1"
 
 CONF_FILENAME = "pyrelease.conf"
 
@@ -55,27 +55,41 @@ class Conf:
             sys.exit(1)
 
 def split_version_string(version_string):
-    version = version_string.split('-')
-    v = version[0].split('.')
-    v.append(version[1])
+    if(version_string.find('-') > -1):
+        version = version_string.split('-')
+        v = version[0].split('.')
+        v.append(version[1])
+    else:
+        v = version_string.split('.')
     return v
 
 def join_version_string(v):
     version = ""
-    for ver in v[:-1]:
-        version += ver + '.'
-    version = version[:-1]
-    version += "-" + v[3]
+    if(len(v) > 3):
+        for ver in v[:-1]:
+            version += ver + '.'
+        version = version[:-1]
+        version += "-" + v[3]
+    else:
+        for ver in v:
+            version += ver + '.'
+        version = version[:-1]
+
     return version
 
 def incr(what, version):
-    version[what] = str(int(version[what]) + 1)
-    if(what <= PATCH):  # FIXME: redo that more clean
-        version[BUILD] = '0'
-        if(what <= MINOR):
-            version[PATCH] = '0'
-            if(what == MAJOR):
-                version[MINOR] = '0'
+    try:
+        version[what] = str(int(version[what]) + 1)
+        if(what <= PATCH):  # FIXME: redo that more clean
+            if(len(version) > 3):
+                version[BUILD] = '0'
+            if(what <= MINOR):
+                version[PATCH] = '0'
+                if(what == MAJOR):
+                    version[MINOR] = '0'
+    except:
+        print("Error: trying to increase build number where format does not allow it")
+        sys.exit(1)
     return version
 
 
@@ -120,6 +134,9 @@ def incr_version(conf, what=BUILD):
                 sys.exit(1)
         i += 1
 
+def prepare_release():
+    pass  # delete the build number from version number
+
 
 if __name__ == '__main__':
     c = Conf()
@@ -133,6 +150,8 @@ if __name__ == '__main__':
         lvl = MINOR
     elif(arg == "major"):
         lvl = MAJOR
+    elif(arg == "release"):
+        prepare_release(config)
     recap = ""
     if("last_version" in config):
         recap += "Was %s. " % config["last_version"]
