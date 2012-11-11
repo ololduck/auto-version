@@ -9,5 +9,5 @@ setup(
     url='https://github.com/paulollivier/auto_versionning',
     license='LICENSE.txt',
     description='A simple versionning automation.',
-    long_description=open('README.txt').read(),
+    long_description=open('README.md').read(),
 )
