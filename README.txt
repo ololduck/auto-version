@@ -52,11 +52,11 @@ The file content may need some precision.
     * `pattern`: this is the regex style pattern to the version string in your file.
         examples:
 
-        * `\\d+\\.\\d+\\.\\d+\\-\\d+` : matches <major>.<minor>.<patch>-<build>
-        * `\\d+\\.\\d+\\.\\d+`: matches <major>.<minor>.<patch>
+        * `\\d+\\.\\d+\\.\\d+\\-\\d+` : matches major.minor.patch-build
+        * `\\d+\\.\\d+\\.\\d+`: matches major.minor.patch
         Other formatting are not currently accepted.
 
-Some other options will be added when you run the program, but you shouldn't have to worry about it.
+Some other values will be added in the config file when you run the program, but you shouldn't have to worry about it.
 
 Now that you configured your project, you may use any of the commands:
 * build
@@ -64,4 +64,10 @@ Now that you configured your project, you may use any of the commands:
 * minor
 * major
 
-You're done.
+Da-daaaam.
+
+## TODO
+* `release` support.
+  This option will be used when you want to perform a release, and so need to adapt the version string to the release formatting.
+* Add other common version strings
+* Add to PyPI.
