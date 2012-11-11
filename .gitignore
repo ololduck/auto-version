@@ -1,0 +1,10 @@
+# PyPI stuff
+MANIFEST
+
+# virtualenv
+venv
+
+# tests
+test.c
+test.xml
+pyrelease.conf
