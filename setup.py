@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(
-    name='pyVersion',
+    name='pyver_auto',
     version='0.1.2',
     author='Paul Ollivier  ',
     author_email='contact@paulollivier.fr',
