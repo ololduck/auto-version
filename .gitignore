@@ -4,6 +4,9 @@ MANIFEST
 # virtualenv
 venv
 
+# sublime
+*.sublime-workspace
+
 # tests
 test.c
 test.xml
