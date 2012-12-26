@@ -5,7 +5,15 @@ import os
 import json
 import re
 
-
+class ConfFileManager:
+    FNAME="auto_versionning.conf"
+    def __init__(self):
+        if(os.path.exists(self.FNAME)):
+            # then read
+            pass
+        else:
+            # then create
+            pass
 
 # Full format, aka. :<major>.<minor>.<patch>+<status>-<build>
 class Full:
