@@ -5,29 +5,6 @@ import os
 import json
 import re
 
-SYS_EXIT_CONF_CREATED = 10
-
-
-class ConfFileManager:
-
-    FNAME = "auto_versionning.conf"
-
-    def __init__(self):
-        if(os.path.exists(self.FNAME)):
-            # then read
-            pass
-        else:
-            # then create
-            pass
-            conf = {}
-            conf["last_version"] = None
-            conf["files"] = [{"path":"path/to/file", "format":"full"},
-                            {"path":"path/to/file", "format":"full"}]
-
-            with open(self.FNAME, 'w+') as f:
-                f.write(json.dumps(conf))
-            sys.exit(SYS_EXIT_CONF_CREATED)
-
 
 # Full format, aka. :<major>.<minor>.<patch>+<status>-<build>
 class Full:
@@ -40,14 +17,17 @@ class Full:
     def parse_file(self, fpath):
         pass
 
-    def perform_major(self):
+    def perform_major(self, version):
         pass
 
-    def perform_minor(self):
+    def perform_minor(self, version):
         pass
 
-    def perform_patch(self):
+    def perform_patch(self, version):
         pass
 
-    def perform_build(self):
+    def perform_build(self, version):
+        pass
+
+    def get_current_version(self):
         pass

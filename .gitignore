@@ -7,7 +7,5 @@ venv
 # sublime
 *.sublime-workspace
 
-# tests
-test.c
-test.xml
-pyrelease.conf
+# python
+*.pyc
