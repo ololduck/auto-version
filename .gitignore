@@ -4,6 +4,7 @@
 
 # PyPI stuff
 MANIFEST
+dist/
 
 # virtualenv
 venv
