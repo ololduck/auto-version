@@ -8,8 +8,21 @@ auto-version's documentation
 
 .. toctree::
 
-Available 'Styles'
-------------------
+Usage
+-----
+
+
+In-depth documentation for trve l33t hackerz of the internets
+-------------------------------------------------------------
+
+Organisation
+~~~~~~~~~~~~
+
+Modules detail
+~~~~~~~~~~~~~~
+.. automodule:: auto_version.parsers
+   :members:
+
 
 .. automodule:: auto_version.styles
    :members:

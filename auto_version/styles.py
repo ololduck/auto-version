@@ -1,6 +1,9 @@
 # -*- coding:utf-8 -*-
 
 """
+auto_version.styles
+~~~~~~~~~~~~~~~~~~~
+
 auto_version.styles is the holder of all the different coding styles.
 
 Each style is built on top of others, as they have multiple features in common. For instance, a Revision-based versionning has a feature used in <major>.<minor>.
