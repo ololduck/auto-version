@@ -6,6 +6,7 @@ __version__ = "0.0.1"
 import argparse
 
 from auto_version.utils import ConfManager
+from auto_version.parsers import BasicParser
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -14,7 +15,10 @@ if __name__ == '__main__':
     parser.add_argument('--conf', default="version.conf", help="the configuration file to use")
     parser.add_argument('--curr_version', "-cv", default=None, help="The version string to use. WARNING: overrides the one provided in configuration file!")
     parser.add_argument("-v", "--verbosity", action="count", default=0)
+    parser.add_argument('--version', action='version', version='%(prog)s ' + __version__)
 
-    args =parser.parse_args()
+    args = vars(parser.parse_args())
 
     cf = ConfManager(args)
+    p = BasicParser(cf.get_conf())
+    p.perform()

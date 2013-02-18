@@ -7,6 +7,7 @@ This module contains the main Parser class. This class is the one parsing the gi
 
 import os
 
+
 class BasicParser:
     """
     This Class is a basic parser. It takes a list of files in argument, and the format of the versionning system, and performs the replacement.
@@ -15,14 +16,13 @@ class BasicParser:
     Expected instanciation arguments are:
         * files: an array of pathnames
         * current_version: a string containing the current version of the versionned project.
-        * style: reference to any non-instanciated member of the auto_version.styles module.
+        * style: string to the auto_version.styles module class to use.
         * action *optionnal*: a string or number representing the action to perform.
     """
 
     files = []
     current_version = ""
     action = None
-
 
     def __init__(self, **kwargs):
         if("files" in kwargs):
@@ -39,7 +39,7 @@ class BasicParser:
                     raise IOError("Could not access file %s. Please check path and/or your rights ont that file." % f)
                 elif(os.path.is_dir(f)):
                     raise NotImplementedError("%s is a directory!" % f)
-                self.files = [f,]
+                self.files = [f, ]
             else:
                 raise RuntimeError("Could not determine type of given data")
         else:
@@ -71,7 +71,7 @@ class BasicParser:
 
             This implementation may be quite long on large files!
         """
-        s = __import__(self.style)
+        s = __import__("auto_version.styles.%s" % self.style)
         style = s(self.current_version)
         new_version = style.increment(self.action)
         for f in self.files:
@@ -83,7 +83,3 @@ class BasicParser:
                 data = data.replace(self.current_version, new_version)
             with open(f, 'w+') as fd:
                 fd.write(data)
-
-
-
-
