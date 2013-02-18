@@ -14,4 +14,7 @@ if __name__ == '__main__':
     parser.add_argument('--conf', default="version.conf", help="the configuration file to use")
     parser.add_argument('--curr_version', "-cv", default=None, help="The version string to use. WARNING: overrides the one provided in configuration file!")
     parser.add_argument("-v", "--verbosity", action="count", default=0)
-    print(parser.parse_args())
+
+    args =parser.parse_args()
+
+    cf = ConfManager(args)
