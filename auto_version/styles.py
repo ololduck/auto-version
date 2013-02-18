@@ -24,8 +24,9 @@ class Revision:
 
     __format__ = r'\d+'
 
-    def __init__(self):
+    def __init__(self, current_version):
         self.regex = re.compile(__format__)
+        self.current_version = current_version
 
     def increment(self, level):
         """
@@ -38,7 +39,7 @@ class Revision:
         return self.current_version
 
 
-class Double(Revision):
+class Doublet(Revision):
     """
     Double format is in the form <major>.<minor>
 
@@ -62,7 +63,56 @@ class Double(Revision):
             * "minor" or 1: increments the <minor> part of version string
             * "major" or 0: increments the <major> part of version string, and resets <minor> to 0.
         """
-        pass
+        version = self.current_version.split('.')
+        if(level == "minor" or level == 1):
+            version[1] = version[1] + 1
+        elif(level == "major" or level == 0):
+            version[0] = version[0] + 1
+            version[1] = 0
+        else:
+            raise ValueError("Invalid level of incrementation given.")
+        return "%d.%d" % version
+
+
+class Triplet(Revision):
+    """
+    Trpilet format is in the form <major>.<minor>.<patch>
+
+    It is the most commonly used versionning 'style'.
+
+    Examples:
+        * 0.0.1
+        * 1.0.2
+    """
+
+    __format__ = r'\d+\.\d+\.\d+'
+
+    def increment(self, level="minor"):
+        """
+        Performs increment of version number, according to the given "level" parameter.
+
+        Level may be one of the followings:
+
+            * "patch" or 2: increments the <patch> part of the version string
+            * "minor" or 1: increments the <minor> part of the version string, and resets <patch> to 0
+            * "major" or 0: increments the <major> part of the version string, and resets <minor> and <patch> to 0
+        """
+
+        version = self.current_version.split('.')
+
+        if(level == "patch" or level == 2):
+            version[2] = version[2] + 1
+        elif(level == "minor" or level == 1):
+            version[1] = version[1] + 1
+            version[2] = 0
+        elif(level == "major" or level == 0):
+            version[0] = version[0] + 1
+            version[1] = 0
+            version[2] = 0
+        else:
+            raise ValueError("Invalid level of incrementation given.")
+        return "%d.%d.%d" % version
+
 # class Full:
 #     """
 #     Full format, aka. :<major>.<minor>.<patch>+<status>-<build>

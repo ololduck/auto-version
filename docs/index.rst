@@ -3,11 +3,13 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to auto-version's documentation!
-========================================
+auto-version's documentation
+============================
 
 .. toctree::
-   :maxdepth: 2
+
+Available 'Styles'
+------------------
 
 .. automodule:: auto_version.styles
    :members:
