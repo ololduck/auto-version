@@ -1,13 +1,15 @@
 from distutils.core import setup
+from increment_version import __version__
 
 setup(
-    name='pyVersion',
-    version='0.1.2',
-    author='Paul Ollivier  ',
+    name='auto-version',
+    version=__version__,
+    author='Paul Ollivier',
     author_email='contact@paulollivier.fr',
-    scripts=['bin/pyver.py'],
+    scripts=['increment_version.py'],
     url='https://github.com/paulollivier/auto_versionning',
     license='LICENSE.txt',
-    description='A simple versionning automation.',
-    long_description=open('README.md').read(),
+    modules=['auto_version'],
+    description='A not-so-simple versionning semi-automation.',
+    long_description=open('README.md', 'r').read(),
 )

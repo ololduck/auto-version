@@ -1,10 +1,18 @@
+# python stuff
+*.pyc
+*.pyo
+
 # PyPI stuff
 MANIFEST
 
 # virtualenv
 venv
 
+# sublime
+*.sublime-workspace
+
 # tests
-test.c
-test.xml
-pyrelease.conf
+version.conf
+
+# docs
+_build
