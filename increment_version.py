@@ -22,4 +22,5 @@ if __name__ == '__main__':
     cf = ConfManager(args)
     conf = cf.get_conf()
     p = BasicParser(files=conf["files"], style=conf["style"], action=conf["action"], current_version=conf["current_version"])
-    p.perform()
+    conf["current_version"] = p.perform()
+    cf.save_conf(conf)
