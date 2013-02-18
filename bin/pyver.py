@@ -6,7 +6,7 @@ import os
 import json
 import re
 
-VERSION = "0.1.2"
+__version__ = "0.1.2"
 
 CONF_FILENAME = "version.conf"
 

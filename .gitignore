@@ -1,3 +1,7 @@
+# python stuff
+*.pyc
+*.pyo
+
 # PyPI stuff
 MANIFEST
 
@@ -5,6 +9,4 @@ MANIFEST
 venv
 
 # tests
-test.c
-test.xml
-pyrelease.conf
+version.conf
