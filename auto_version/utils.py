@@ -1,25 +1,15 @@
-import sys
-import os
+"""
+auto_version.utils
+~~~~~~~~~~~~~~~~~~
 
-SYS_EXIT_CONF_CREATED = 10
+Contains some utilities used in the project. You should not have to bother with it.
+"""
 
 
-class ConfFileManager:
-
-    FNAME = "auto_versionning.conf"
+class ConfManager:
+    """
+    Configuration manager. It makes the bridge and the intelligence between the cli args and the configuration file, who may be present. Or not. Whatever.
+    """
 
     def __init__(self):
-        if(os.path.exists(self.FNAME)):
-            # then read
-            pass
-        else:
-            # then create
-            pass
-            conf = {}
-            conf["last_version"] = None
-            conf["files"] = [{"path":"path/to/file", "format":"full"},
-                            {"path":"path/to/file", "format":"full"}]
-
-            with open(self.FNAME, 'w+') as f:
-                f.write(json.dumps(conf))
-
+        pass

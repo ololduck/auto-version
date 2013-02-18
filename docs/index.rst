@@ -27,6 +27,13 @@ Modules detail
 .. automodule:: auto_version.styles
    :members:
 
+
+Less usefull stuff
+~~~~~~~~~~~~~~~~~~
+
+.. automodule:: auto_version.utils
+   :members:
+
 Indices and tables
 ==================
 

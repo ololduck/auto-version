@@ -25,7 +25,7 @@ class Revision:
     It is used in some DCVS, such as mercurial, or svn.
     """
 
-    __format__ = r'\d+'
+    __format__ = '\d+'
 
     def __init__(self, current_version):
         self.regex = re.compile(__format__)
@@ -56,7 +56,7 @@ class Doublet(Revision):
         * 1.53
     """
 
-    __format__ = r'\d+\.\d+'
+    __format__ = '\d+\.\d+'
 
     def increment(self, level="minor"):
         """
@@ -88,7 +88,7 @@ class Triplet(Revision):
         * 1.0.2
     """
 
-    __format__ = r'\d+\.\d+\.\d+'
+    __format__ = '\d+\.\d+\.\d+'
 
     def increment(self, level="patch"):
         """
@@ -116,23 +116,28 @@ class Triplet(Revision):
             raise ValueError("Invalid level of incrementation given.")
         return "%d.%d.%d" % version
 
-# class Full:
-#     """
-#     Full format, aka. :<major>.<minor>.<patch>+<status>-<build>
-#     where <major>, <minor>, <patch> and <build> are numbers (aka, the actual version number. Well, except for the build number),
-#     and <status> is one of the following:
-#         * prealpha
-#         * alpha
-#         * beta
-#         * rc
-#         * release
-#     """
 
-#     FORMAT = r'\d+\.\d+\.\d+\+\w\-\d+'
+class Full(Revision):
+    """
+    Full format, aka. :<major>.<minor>.<patch>+<status>-<build>
+    where <major>, <minor>, <patch> and <build> are numbers (aka, the actual version number. Well, except for the build number),
+    and <status> is one of the following:
 
-#     def __init__(self):
-#         pass
+        * prealpha
+        * alpha
+        * beta
+        * rc
+        * release
 
-#     def increment(self, level):
-#         pass
+    .. warning::
 
+        NOT YET IMPLEMENTED!
+    """
+
+    FORMAT = r'\d+\.\d+\.\d+\+\w\-\d+'
+
+    def __init__(self):
+        raise NotImplementedError()
+
+    def increment(self, level="build"):
+        raise NotImplementedError()

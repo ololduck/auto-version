@@ -1,5 +1,5 @@
 from distutils.core import setup
-from bin.pyver import __version__
+from bin.increment_version import __version__
 
 setup(
     name='auto-version',
