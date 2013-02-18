@@ -87,7 +87,7 @@ class Triplet(Revision):
 
     __format__ = r'\d+\.\d+\.\d+'
 
-    def increment(self, level="minor"):
+    def increment(self, level="patch"):
         """
         Performs increment of version number, according to the given "level" parameter.
 
