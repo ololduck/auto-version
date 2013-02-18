@@ -6,6 +6,16 @@ This module contains the main Parser class. This class is the one parsing the gi
 """
 
 import os
+import re
+
+
+def import_style(name):
+    """
+    Simple utility function, taken from the __import__ docstring to import classes.
+    """
+    mod = __import__('auto_version.styles', fromlist=[name])
+    klass = getattr(mod, name)
+    return klass
 
 
 class BasicParser:
@@ -33,11 +43,11 @@ class BasicParser:
                     elif(os.path.is_dir(f)):
                         raise NotImplementedError("%s is a directory!" % f)
                 self.files = list(kwargs["files"])
-            elif(type(kwargs["files"]) is str):
+            elif(type(kwargs["files"]) is str or type(kwargs["files"]) is unicode):
                 f = kwargs["files"]
                 if(not os.path.exists(f)):
                     raise IOError("Could not access file %s. Please check path and/or your rights ont that file." % f)
-                elif(os.path.is_dir(f)):
+                elif(os.path.isdir(f)):
                     raise NotImplementedError("%s is a directory!" % f)
                 self.files = [f, ]
             else:
@@ -46,14 +56,12 @@ class BasicParser:
             raise ValueError("You have not given any file to parse!")
 
         if("style" in kwargs):
-            if("increment" not in kwargs["style"].__dict__):
-                raise ValueError("Given style to use has no increment method")
             self.style = kwargs["style"]
         else:
             raise ValueError("No style given")
 
         if("current_version" in kwargs):
-            if(type(kwargs["current_version"]) is not str):
+            if(type(kwargs["current_version"]) is not str and type(kwargs["current_version"]) is not unicode):
                 raise RuntimeError("current_version is not a string!")
             self.current_version = kwargs["current_version"]
         else:
@@ -71,15 +79,14 @@ class BasicParser:
 
             This implementation may be quite long on large files!
         """
-        s = __import__("auto_version.styles.%s" % self.style)
+        s = import_style(self.style)
         style = s(self.current_version)
         new_version = style.increment(self.action)
         for f in self.files:
             data = ""
             with open(f, 'r') as fd:
                 data = fd.read()
-            match = data.findall(self.current_version)
-            for m in match:
+            for m in re.finditer(self.current_version, data):
                 data = data.replace(self.current_version, new_version)
             with open(f, 'w+') as fd:
                 fd.write(data)

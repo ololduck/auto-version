@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__version__ = "0.0.1"
+__version__ = "0.1.0"
 
 import argparse
 
@@ -20,5 +20,6 @@ if __name__ == '__main__':
     args = vars(parser.parse_args())
 
     cf = ConfManager(args)
-    p = BasicParser(cf.get_conf())
+    conf = cf.get_conf()
+    p = BasicParser(files=conf["files"], style=conf["style"], action=conf["action"], current_version=conf["current_version"])
     p.perform()
