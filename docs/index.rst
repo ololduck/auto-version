@@ -8,8 +8,33 @@ auto-version's documentation
 
 .. toctree::
 
+Installation
+------------
+
+Just run
+
+::
+
+    pip install auto-version
+
 Usage
 -----
+
+You may use it entirely from the CLI, but it may not be advised for projects. The cli is just htere for convenience.
+
+It is intended to be used via a configuration file, by default named *version.conf*
+
+Here is the one used for this module:
+
+::
+
+    {
+        "files": "increment_version.py",
+        "current_version": "0.1.0",
+        "style": "Triplet"
+    }
+
+
 
 
 In-depth documentation for trve l33t hackerz of the internets
