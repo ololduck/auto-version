@@ -1,3 +1,7 @@
+# python stuff
+*.pyc
+*.pyo
+
 # PyPI stuff
 MANIFEST
 
@@ -7,5 +11,5 @@ venv
 # sublime
 *.sublime-workspace
 
-# python
-*.pyc
+# tests
+version.conf
