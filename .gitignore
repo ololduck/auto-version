@@ -13,3 +13,6 @@ venv
 
 # tests
 version.conf
+
+# docs
+_build
