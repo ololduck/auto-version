@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 import argparse
 
@@ -21,6 +21,7 @@ if __name__ == '__main__':
 
     cf = ConfManager(args)
     conf = cf.get_conf()
+    print(conf)
     p = BasicParser(files=conf["files"], style=conf["style"], action=conf["action"], current_version=conf["current_version"])
     conf["current_version"] = p.perform()
     del conf["verbosity"]
