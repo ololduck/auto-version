@@ -12,8 +12,6 @@ venv
 # sublime
 *.sublime-workspace
 
-# tests
-version.conf
 
 # docs
 _build

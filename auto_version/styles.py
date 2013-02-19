@@ -20,7 +20,7 @@ import re
 class Revision:
     """
     Revision format is a simple, one-number versionning format: r<number>
-    for example, r7 is the verison after r6.
+    for example, r7 is the version after r6.
 
     It is used in some DCVS, such as mercurial, or svn.
     """
