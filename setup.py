@@ -11,5 +11,5 @@ setup(
     license='LICENSE.txt',
     modules=['auto_version'],
     description='A not-so-simple versionning semi-automation.',
-    long_description=open('README.md', 'r').read(),
+    long_description=open('README.rst', 'r').read(),
 )
