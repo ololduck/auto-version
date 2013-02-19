@@ -34,6 +34,10 @@ Here is the one used for this module:
         "style": "Triplet"
     }
 
+The ``style`` option is a string representing the name of the style class to use. Here, I use the Triplet format, which consists in ``<major>.<minor>.<patch>``.
+
+See `auto_version.styles`_
+
 
 
 

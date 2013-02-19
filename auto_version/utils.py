@@ -26,6 +26,8 @@ class ConfManager:
         self.cli_args = cli_args
         if(self.cli_args["files"] is None):
             del self.cli_args["files"]
+        if(self.cli_args["current_version"] is None):
+            del self.cli_args["current_version"]
         self.file_conf = None
 
         if(os.path.exists(self.cli_args["conf"])):

@@ -1,9 +1,4 @@
-argparse==1.2.1
-coverage==3.6b2
-distribute==0.6.24
-logilab-astng==0.24.1
-logilab-common==0.58.3
-nose==1.2.1
-nosexcover==1.0.7
-pylint==0.26.0
-wsgiref==0.1.2
+coverage
+nose
+nosexcover
+pylint

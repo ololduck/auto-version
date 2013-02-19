@@ -4,6 +4,7 @@
 
 # PyPI stuff
 MANIFEST
+dist/
 
 # virtualenv
 venv
@@ -11,8 +12,6 @@ venv
 # sublime
 *.sublime-workspace
 
-# tests
-version.conf
 
 # docs
 _build
