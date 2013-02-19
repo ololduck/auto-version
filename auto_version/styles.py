@@ -25,21 +25,22 @@ class Revision:
     It is used in some DCVS, such as mercurial, or svn.
     """
 
-    __format__ = '\d+'
+    __format__ = 'r\d+'
 
     def __init__(self, current_version):
         self.regex = re.compile(self.__format__)
         self.current_version = current_version
+        if(self.regex.match(self.current_version) is None):
+            raise ValueError("The current version you provided does not correspond to the chosen version style. Please review your configuration file and/or your cli args.")
 
-    def increment(self, level):
+    def increment(self, level=None):
         """
         Performs the actual incrementation of the version number. The parameter ``level`` is ignored here, because there is only one.
         """
         version = self.current_version[1:]
         version = int(version)
         version = version + 1
-        self.current_version = 'r%d' % version
-        return self.current_version
+        return 'r%d' % version
 
 
 class Doublet(Revision):
