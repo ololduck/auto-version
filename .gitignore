@@ -5,9 +5,11 @@
 # PyPI stuff
 MANIFEST
 dist/
+build/
 
 # virtualenv
 venv
+.coverage
 
 # sublime
 *.sublime-workspace
