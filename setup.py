@@ -1,4 +1,8 @@
-from distutils.core import setup
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
+
 from increment_version import __version__
 
 setup(
