@@ -1,5 +1,4 @@
 coverage
 nose
-nosexcover
 pylint
 argparse
