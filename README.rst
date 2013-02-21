@@ -2,6 +2,8 @@
 auto_versionning
 ================
 
+.. image:: https://travis-ci.org/paulollivier/auto_versionning.png?branch=master
+
 This project consists of a small utility to perform semi-automatic
 version number increase.
 
