@@ -9,9 +9,10 @@ setup(
     scripts=['increment_version.py'],
     url='https://github.com/paulollivier/auto_versionning',
     license=open('LICENSE.txt', 'r').read(),
-    packages=['auto_version'],
+    packages=['auto_version', 'auto_version.parsers', 'auto_version.styles', 'auto_version.utils'],
     description='A not-so-simple versionning semi-automation.',
     long_description=open('README.rst', 'r').read(),
+    requires=["argparse"],
     classifiers=(
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
