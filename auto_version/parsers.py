@@ -7,15 +7,7 @@ This module contains the main Parser class. This class is the one parsing the gi
 
 import os
 import re
-
-
-def import_style(name):
-    """
-    Simple utility function, taken from the __import__ docstring to import classes.
-    """
-    mod = __import__('auto_version.styles', fromlist=[name])
-    klass = getattr(mod, name)
-    return klass
+from auto_version.utils import import_style, detect_vcs
 
 
 class BasicParser:
@@ -33,6 +25,9 @@ class BasicParser:
     files = []
     current_version = ""
     action = None
+
+    def get_style_class_from_str(self, style):
+        return import_style(style)
 
     def __init__(self, **kwargs):
         if("files" in kwargs):
@@ -65,7 +60,7 @@ class BasicParser:
                 raise RuntimeError("current_version is not a string!")
             self.current_version = kwargs["current_version"]
         else:
-            print("No current version given. I will search for it now, but it may be long, and may be incorrect.")
+            raise ValueError("Could not find current verion. This may lead to serious things. I would personnaly prefere that you use a correct configuration file.")
             # TODO: Create a function search for the style pattern in the files.
 
         if("action" in kwargs):
@@ -79,9 +74,11 @@ class BasicParser:
 
             This implementation may be quite long on large files!
         """
-        s = import_style(self.style)
-        style = s(self.current_version)
+
+        style = self.get_style_class_from_str(self.style)(self.current_version)
+
         new_version = style.increment(self.action)
+        self.vcs = detect_vcs()(style)
         for f in self.files:
             data = ""
             with open(f, 'r') as fd:
@@ -90,4 +87,7 @@ class BasicParser:
                 data = data.replace(self.current_version, new_version)
             with open(f, 'w+') as fd:
                 fd.write(data)
+
+        self.vcs.set_version(new_version)
+
         return new_version

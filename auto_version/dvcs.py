@@ -15,11 +15,15 @@ If the user wants to use DVCS system, the option --use-vcs should be present, or
 
 import os
 from subprocess import check_output, check_call
-
+from auto_version.utils import import_style
 
 class BaseVCS:
     """
     Base VCS class
+
+    .. attention::
+
+        Do not use, use the actual vcs implementations instead
     """
 
     __meta_dir__ = ".meta"  # Should be overriden to reflect the meta-information folder for each system.
@@ -39,6 +43,13 @@ class BaseVCS:
         """
         raise NotImplementedError("This versionning class is not designed to be used, but rather as a base for actual implementations to rely on.")
 
+    def set_version(self, version=None):
+        """
+        When a verison increment is made, update the vcs
+        """
+        raise NotImplementedError("This versionning class is not designed to be used, but rather as a base for actual implementations to rely on.")
+
+
 class Git(BaseVCS):
     """
     Provides git support, via git tags. As many tag their commits with release numbers, it is a good idea to sync auto-version with these tags.
@@ -46,9 +57,10 @@ class Git(BaseVCS):
 
     __meta_dir__ = ".git"
 
-    def __init__(self):
+    def __init__(self, style):
         self.status = None
-        super(BaseVCS, self).__init__()
+        self.style = style
+        BaseVCS.__init__(self)
 
     def _update_index(self):
         """
@@ -58,23 +70,30 @@ class Git(BaseVCS):
 
     def _get_describe(self):
         if(not self.status):
-            self.status = check_output(["git", "describe", "--tags", "--dirty"])  # TODO: actually, we force users to use vX.X(...) tags. find an other way. This is a bit unsafe.
+            s = check_output(["git", "describe", "--tags", "--dirty"])  # TODO: actually, we force users to use vX.X(...) tags. find an other way. This is a bit unsafe.
+            self.status = [str(s) for s in self.status.strip('\n').split('-')]
+            if(len(self.status) > 1):
+                self.status[0] = self.style.increment(self.status[0])
+
         return self.status
 
     def get_status(self):
         self._update_index()
         self._get_describe()
-        try:
-            s = [str(s) for s in self.status.strip('\n').split('-')]
+        if(len(self.status) == 3):
             return 'pre%s-%s-%s' % s[1:]
-        except:
-            s = [str(s) for s in self.status.strip('\n').split('-')]
+        elif(len(self.status) == 4):
             return 'pre%s-%s' % s[1:]
+        else:
+            return ""
 
     def get_current_version(self, with_status=False):
         self._update_index()
         self._get_describe()
-        s = [str(s) for s in self.status.strip('\n').split('-')]
         if(with_status):
             return "".join(s[0][1:], self.get_status())
+
+    def set_version(self, version=None):
+        if(version is not None):
+            check_call(["git", "tag", version])
 

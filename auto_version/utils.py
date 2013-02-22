@@ -9,6 +9,39 @@ import os
 import json
 
 
+def import_style(name):
+    """
+    Simple utility function, taken from the __import__ docstring to import classes.
+    """
+    mod = __import__('auto_version.styles', fromlist=[name])
+    klass = getattr(mod, name)
+    return klass
+
+from dvcs import *
+
+
+def detect_vcs():
+    """
+    Detects the versionning system in use.
+
+    .. attention::
+
+        it does not currently handle multi-vcs systems
+
+    .. todo::
+
+        find a way to make this function auto-updating according to the classes loaded
+
+    """
+    dir_list = os.listdir(os.path.abspath('.'))
+    klass = None
+    for el in dir_list:
+        if(el == ".git"):
+            klass = Git
+            continue
+    return klass
+
+
 class ConfManager:
     """
     Configuration manager. It makes the bridge and the intelligence between the cli args and the configuration file, who may be present. Or not. Whatever.
@@ -53,8 +86,6 @@ class ConfManager:
                 print("No key \"files\" in conf!")
             raise ValueError("Could not find the files to parse anywhere!")
 
-        if("current_version" not in self.conf):
-            raise ValueError("Could not find current verion. This may lead to serious things. I would personnaly prefere that you use a correct configuration file.")
         if("action" not in self.conf):
             raise ValueError("no action given! nothing to do \\o/")
 
