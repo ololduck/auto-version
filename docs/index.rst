@@ -62,12 +62,16 @@ Organisation
 
 Modules detail
 ~~~~~~~~~~~~~~
+.. automodule:: auto_version.styles
+   :members:
+
+.. automodule:: auto_version.dvcs
+   :members:
+
 .. automodule:: auto_version.parsers
    :members:
 
 
-.. automodule:: auto_version.styles
-   :members:
 
 
 Less usefull stuff
