@@ -47,5 +47,15 @@ class StyleRevisionTest(unittest.TestCase):
     def test_not_correct_current_version(self):
         self.assertRaises(ValueError, styles.Revision, "1")
 
+
+class StyleFullTest(unittest.TestCase):
+    def test_correct_increment(self):
+        try:
+            self.t = styles.Full("1.2.3+alpha-4")
+            self.assertEqual("1.2.3+alpha-5", self.t.increment("build"))
+            self.assertEqual("1.2.4+alpha-0", self.t.increment("patch"))
+            self.assertEqual("1.3.3+alpha-0", self.t.increment("minor"))
+            self.assertEqual("2.0.0+alpha-0", self.t.increment("major"))
+
 if __name__ == '__main__':
     unittest.main()
