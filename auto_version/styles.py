@@ -17,7 +17,19 @@ I am still thinking about it.
 import re
 
 
-class Revision:
+class BaseStyle:
+    """
+    This is the base style every Style class should inherit from.
+    """
+
+    def __init__(self, current_version):
+        self.regex = re.compile(self.__format__)
+        self.current_version = current_version
+        if(self.regex.match(self.current_version) is None):
+            raise ValueError("The current version you provided does not correspond to the chosen version style. Please review your configuration file and/or your cli args.")
+
+
+class Revision(BaseStyle):
     """
     Revision format is a simple, one-number versionning format: r<number>
     for example, r7 is the version after r6.
@@ -26,12 +38,6 @@ class Revision:
     """
 
     __format__ = 'r\d+'
-
-    def __init__(self, current_version):
-        self.regex = re.compile(self.__format__)
-        self.current_version = current_version
-        if(self.regex.match(self.current_version) is None):
-            raise ValueError("The current version you provided does not correspond to the chosen version style. Please review your configuration file and/or your cli args.")
 
     def increment(self, level=None):
         """
@@ -43,7 +49,7 @@ class Revision:
         return 'r%d' % version
 
 
-class Doublet(Revision):
+class Doublet(BaseStyle):
     """
     Double format is in the form <major>.<minor>
 
@@ -78,7 +84,7 @@ class Doublet(Revision):
         return "%d.%d" % (version[0], version[1])
 
 
-class Triplet(Revision):
+class Triplet(BaseStyle):
     """
     Trpilet format is in the form <major>.<minor>.<patch>
 
@@ -118,7 +124,7 @@ class Triplet(Revision):
         return "%d.%d.%d" % (version[0], version[1], version[2])
 
 
-class Full(Revision):
+class Full(BaseStyle):
     """
     Full format, aka. :<major>.<minor>.<patch>+<status>-<build>
     where <major>, <minor>, <patch> and <build> are numbers (aka, the actual version number. Well, except for the build number),
@@ -135,7 +141,7 @@ class Full(Revision):
         NOT YET IMPLEMENTED!
     """
 
-    FORMAT = r'\d+\.\d+\.\d+\+\w\-\d+'
+    __format__ = '\d+\.\d+\.\d+\+\w\-\d+'
 
     def __init__(self):
         raise NotImplementedError()

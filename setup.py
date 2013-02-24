@@ -1,4 +1,8 @@
-from distutils.core import setup
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
+
 from increment_version import __version__
 
 setup(
@@ -12,6 +16,7 @@ setup(
     packages=['auto_version'],
     description='A not-so-simple versionning semi-automation.',
     long_description=open('README.rst', 'r').read(),
+    requires=["argparse"],
     classifiers=(
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',

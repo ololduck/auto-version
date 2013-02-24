@@ -17,6 +17,10 @@ class StyleTripletTest(unittest.TestCase):
     def test_not_correct_current_version(self):
         self.assertRaises(ValueError, styles.Triplet, "1-2-3")
 
+    def test_not_correct_action(self):
+        self.t = styles.Triplet("1.2.3")
+        self.assertRaises(ValueError, self.t.increment, "ohai")
+
 
 class StyleDoubletTest(unittest.TestCase):
 
@@ -27,6 +31,10 @@ class StyleDoubletTest(unittest.TestCase):
 
     def test_not_correct_current_version(self):
         self.assertRaises(ValueError, styles.Doublet, "1-2")
+
+    def test_not_correct_action(self):
+        self.t = styles.Doublet("1.2")
+        self.assertRaises(ValueError, self.t.increment, "ohai")
 
 
 class StyleRevisionTest(unittest.TestCase):

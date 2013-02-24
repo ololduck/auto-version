@@ -45,10 +45,10 @@ class BasicParser:
                 self.files = list(kwargs["files"])
             elif(type(kwargs["files"]) is str or type(kwargs["files"]) is unicode):
                 f = kwargs["files"]
-                if(not os.path.exists(f)):
-                    raise IOError("Could not access file %s. Please check path and/or your rights ont that file." % f)
-                elif(os.path.isdir(f)):
+                if(os.path.isdir(f)):
                     raise NotImplementedError("%s is a directory!" % f)
+                elif(not os.path.exists(f)):
+                    raise IOError("Could not access file %s. Please check path and/or your rights ont that file." % f)
                 self.files = [f, ]
             else:
                 raise RuntimeError("Could not determine type of given data")
