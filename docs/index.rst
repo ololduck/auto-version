@@ -36,7 +36,20 @@ Here is the one used for this module:
 
 The ``style`` option is a string representing the name of the style class to use. Here, I use the Triplet format, which consists in ``<major>.<minor>.<patch>``.
 
-See `auto_version.styles`_
+``"files"`` may be a simple string, or an array, like this:
+
+::
+
+    {
+        "files": [
+            "path/to/file",
+            "other/path/to/file"
+        ],
+        other stuff,
+        blablabla
+    }
+
+See `auto_version.styles`_ for more available version string styles.
 
 
 
@@ -49,12 +62,16 @@ Organisation
 
 Modules detail
 ~~~~~~~~~~~~~~
+.. automodule:: auto_version.styles
+   :members:
+
+.. automodule:: auto_version.dvcs
+   :members:
+
 .. automodule:: auto_version.parsers
    :members:
 
 
-.. automodule:: auto_version.styles
-   :members:
 
 
 Less usefull stuff
