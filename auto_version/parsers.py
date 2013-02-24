@@ -76,9 +76,15 @@ class BasicParser:
         """
 
         style = self.get_style_class_from_str(self.style)(self.current_version)
-
-        new_version = style.increment(self.action)
         self.vcs = detect_vcs()(style)
+        if(self.action == "update"):
+            if(self.vcs is not None):
+                new_version = self.vcs.get_current_version(with_status=True)  # FIXME
+            else:
+                raise NotImplementedError("It seems you are trying to do some versionning sync with a non-supported versionning system (Are you really using one on this project?) Please feel free to send an issue at https://github.com/paulollivier/auto_versionning !")
+        else:
+            new_version = style.increment(self.action)
+
         for f in self.files:
             data = ""
             with open(f, 'r') as fd:
@@ -87,7 +93,5 @@ class BasicParser:
                 data = data.replace(self.current_version, new_version)
             with open(f, 'w+') as fd:
                 fd.write(data)
-
-        self.vcs.set_version(new_version)
 
         return new_version

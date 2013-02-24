@@ -15,7 +15,7 @@ If the user wants to use DVCS system, the option --use-vcs should be present, or
 
 import os
 from subprocess import check_output, check_call
-from auto_version.utils import import_style
+
 
 class BaseVCS:
     """
@@ -29,7 +29,7 @@ class BaseVCS:
     __meta_dir__ = ".meta"  # Should be overriden to reflect the meta-information folder for each system.
 
     def __init__(self):
-        self.meta_info_present = self.__meta_dir__ in  os.listdir(os.path.abspath('.'))
+        self.meta_info_present = self.__meta_dir__ in os.listdir(os.path.abspath('.'))
 
     def get_status(self):
         """
@@ -81,9 +81,9 @@ class Git(BaseVCS):
         self._update_index()
         self._get_describe()
         if(len(self.status) == 3):
-            return 'pre%s-%s-%s' % s[1:]
+            return 'pre%s-%s-%s' % self.status[1:]
         elif(len(self.status) == 4):
-            return 'pre%s-%s' % s[1:]
+            return 'pre%s-%s' % self.status[1:]
         else:
             return ""
 
@@ -91,9 +91,9 @@ class Git(BaseVCS):
         self._update_index()
         self._get_describe()
         if(with_status):
-            return "".join(s[0][1:], self.get_status())
+            return "".join(self.status[0][1:], self.get_status())
+        return self.status[0][1:]
 
     def set_version(self, version=None):
         if(version is not None):
             check_call(["git", "tag", version])
-
