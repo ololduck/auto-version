@@ -56,6 +56,7 @@ class BasicParser:
         else:
             raise ValueError("No style given")
 
+        self.scm_prefix = ""
         if(u"scm_prefix" in kwargs):
             self.scm_prefix = kwargs["scm_prefix"]
 
@@ -83,7 +84,6 @@ class BasicParser:
         style = self.get_style_class_from_str(self.style)
         self.vcs.style = style
         logger.info(self.current_version)
-        used_vcs = False
         if(self.current_version == ""):
             self.current_version = self.vcs.get_current_version(with_status=True, increment=False)
             logger.info("vcs version = " + self.current_version)
@@ -101,7 +101,6 @@ class BasicParser:
                 new_version = self.vcs.get_current_version(with_status=False, increment=False)
                 style_instance = style(new_version)
                 new_version = style_instance.increment(self.action)
-                used_vcs = True
         logger.info("old version:" + self.current_version + " new version: " + new_version)
         for f in self.files:
             data = ""
@@ -111,8 +110,7 @@ class BasicParser:
                 data = data.replace(self.current_version, new_version)
             with open(f, 'w+') as fd:
                 fd.write(data)
-        logger.debug("scm_prefix: %s, used_vcs: %s" % (self.scm_prefix, str(used_vcs)))
-        if(self.scm_prefix or used_vcs):
+        if(self.vcs and self.action != "update"):
             logger.info("setting new version %s to SCM" % new_version)
             self.vcs.set_version(version=new_version, prefix=self.scm_prefix)
 

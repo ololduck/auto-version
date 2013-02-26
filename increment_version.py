@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-__version__ = "0.1.1"
+__version__ = "0.1.2-pre35-ge14da60"
 
 import argparse
 import logging
@@ -34,7 +34,10 @@ if __name__ == '__main__':
         cf = ConfManager(args)
         conf = cf.get_conf()
         logger.debug(str(conf))
-        p = BasicParser(files=conf["files"], style=conf["style"], action=conf["action"], current_version=conf["current_version"], scm_prefix=conf["scm_prefix"])
+        if("scm_prefix" in conf):
+            p = BasicParser(files=conf["files"], style=conf["style"], action=conf["action"], current_version=conf["current_version"], scm_prefix=conf["scm_prefix"])
+        else:
+            p = BasicParser(files=conf["files"], style=conf["style"], action=conf["action"], current_version=conf["current_version"])
         conf["current_version"] = p.perform()
         del conf["verbosity"]
         del conf["action"]
