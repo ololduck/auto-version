@@ -82,11 +82,6 @@ class Git(BaseVCS):
         logger.debug("self.status = " + str(self.status))
         if(len(self.status) > 1 and self.status[1] != "dirty" and increment):
             logger.debug(self.status[0])
-            # self.status[0] = self.style(
-            #     self.style.get_pure_version_string(
-            #         self.status[0]
-            #         )
-            #     ).increment()
             self.status[0] = self.style(
                 self.style.get_pure_version_string(
                     self.style,
@@ -120,6 +115,6 @@ class Git(BaseVCS):
             return "".join((self.status[0], self.get_status()))
         return self.status[0]
 
-    def set_version(self, version=None):
-        if(version is not None):
-            check_call(["git", "tag", version])
+    def set_version(self, version=None, prefix=""):
+        if(version):
+            check_call(["git", "tag", prefix + version])

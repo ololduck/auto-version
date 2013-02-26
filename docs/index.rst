@@ -20,6 +20,9 @@ Just run
 Usage
 -----
 
+Manual and semi-manual
+~~~~~~~~~~~~~~~~~~~~~~
+
 You may use it entirely from the CLI, but it may not be advised for projects. The cli is just htere for convenience.
 
 It is intended to be used via a configuration file, by default named *version.conf*
@@ -50,6 +53,24 @@ The ``style`` option is a string representing the name of the style class to use
     }
 
 See `auto_version.styles`_ for more available version string styles.
+
+VCS Integration
+~~~~~~~~~~~~~~~
+
+.. warning::
+
+    This is still a rather unstable feature, your workflow may be changed.
+
+If verisonning system is detected (via the presence or not of a distinctive versionning directory, like ``.git``), ``increment_version.py`` uses the informations present in the SCM to determine the version numbers. For git, it is via the ``git tag`` and ``git describe`` commands;
+
+This still requires a ``version.conf`` file, but only two parameters are used::
+
+    {
+        "files": "file_to_manage",
+        "style": "Triplet"
+    }
+
+
 
 
 

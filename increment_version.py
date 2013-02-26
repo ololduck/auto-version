@@ -26,7 +26,7 @@ if __name__ == '__main__':
         logger.setLevel(logging.WARNING)
     elif(loglvl == 2):
         logger.setLevel(logging.INFO)
-    elif(loglvl == 3):
+    elif(loglvl >= 3):
         logger.setLevel(logging.DEBUG)
 
     try:
@@ -34,7 +34,7 @@ if __name__ == '__main__':
         cf = ConfManager(args)
         conf = cf.get_conf()
         logger.debug(str(conf))
-        p = BasicParser(files=conf["files"], style=conf["style"], action=conf["action"], current_version=conf["current_version"])
+        p = BasicParser(files=conf["files"], style=conf["style"], action=conf["action"], current_version=conf["current_version"], scm_prefix=conf["scm_prefix"])
         conf["current_version"] = p.perform()
         del conf["verbosity"]
         del conf["action"]

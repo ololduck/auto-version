@@ -25,6 +25,7 @@ class BasicParser:
     files = []
     current_version = ""
     action = None
+    scm_prefix = ""
 
     def get_style_class_from_str(self, style):
         return import_style(style)
@@ -55,6 +56,9 @@ class BasicParser:
         else:
             raise ValueError("No style given")
 
+        if(u"scm_prefix" in kwargs):
+            self.scm_prefix = kwargs["scm_prefix"]
+
         if("current_version" in kwargs):
             if(type(kwargs["current_version"]) is not str and type(kwargs["current_version"]) is not unicode):
                 raise RuntimeError("current_version is not a string!")
@@ -79,6 +83,7 @@ class BasicParser:
         style = self.get_style_class_from_str(self.style)
         self.vcs.style = style
         logger.info(self.current_version)
+        used_vcs = False
         if(self.current_version == ""):
             self.current_version = self.vcs.get_current_version(with_status=True, increment=False)
             logger.info("vcs version = " + self.current_version)
@@ -88,8 +93,15 @@ class BasicParser:
             else:
                 raise NotImplementedError("It seems you are trying to do some versionning sync with a non-supported versionning system (Are you really using one on this project?) Please feel free to send an issue at https://github.com/paulollivier/auto_versionning !")
         else:
-            style = style(self.current_version)
-            new_version = style.increment(self.action)
+            try:
+                style_instance = style(self.current_version)
+                new_version = style_instance.increment(self.action)
+            except:
+                logger.info("Style instance reported error trying to process version number. Trying with SCM info")
+                new_version = self.vcs.get_current_version(with_status=False, increment=False)
+                style_instance = style(new_version)
+                new_version = style_instance.increment(self.action)
+                used_vcs = True
         logger.info("old version:" + self.current_version + " new version: " + new_version)
         for f in self.files:
             data = ""
@@ -99,5 +111,9 @@ class BasicParser:
                 data = data.replace(self.current_version, new_version)
             with open(f, 'w+') as fd:
                 fd.write(data)
+        logger.debug("scm_prefix: %s, used_vcs: %s" % (self.scm_prefix, str(used_vcs)))
+        if(self.scm_prefix or used_vcs):
+            logger.info("setting new version %s to SCM" % new_version)
+            self.vcs.set_version(version=new_version, prefix=self.scm_prefix)
 
         return new_version
