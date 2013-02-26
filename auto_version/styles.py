@@ -15,6 +15,7 @@ I am still thinking about it.
 
 """
 import re
+from auto_version.utils import logger
 
 
 class BaseStyle:
@@ -23,10 +24,21 @@ class BaseStyle:
     """
 
     def __init__(self, current_version):
+        logger.debug("style = " + str(current_version))
         self.regex = re.compile(self.__format__)
         self.current_version = current_version
         if(self.regex.match(self.current_version) is None):
             raise ValueError("The current version you provided does not correspond to the chosen version style. Please review your configuration file and/or your cli args.")
+
+    @staticmethod
+    def get_pure_version_string(style_class, string):
+        """
+        Returns only the part matching the version string, so we can isolate it in a string
+        """
+        match = re.search(style_class.__format__, string)
+        if(match):
+            return string[match.start():match.end()]
+        return None
 
 
 class Revision(BaseStyle):
