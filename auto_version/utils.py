@@ -7,6 +7,14 @@ Contains some utilities used in the project. You should not have to bother with 
 
 import os
 import json
+import logging
+
+logger = logging.getLogger("auto_version")
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 
 
 def import_style(name):
@@ -17,7 +25,7 @@ def import_style(name):
     klass = getattr(mod, name)
     return klass
 
-from dvcs import *
+from auto_version.dvcs import *
 
 
 def detect_vcs():
@@ -64,26 +72,25 @@ class ConfManager:
         self.file_conf = None
 
         if(os.path.exists(self.cli_args["conf"])):
-            if(self.cli_args["verbosity"] >= 2):
-                print("Found config file %s" % self.cli_args["conf"])
+            logger.info("Found config file %s" % self.cli_args["conf"])
             with open(self.cli_args["conf"], 'r') as f:
                 data = f.read()
-                if(self.cli_args["verbosity"] >= 2):
-                    print(data)
+                logger.debug(data)
                 self.file_conf = json.loads(data)
             self.conf = self.file_conf
+        if(self.cli_args["current_version"] == ""):
+            del self.cli_args["current_version"]
+        logger.debug("cli_args: " + str(self.cli_args))
         self.conf.update(self.cli_args)
         if("files" in self.conf):
-            if(self.conf["verbosity"] >= 3):
-                print(self.conf["files"], type(self.conf["files"]))
+            logger.info(self.conf["files"] + " " + str(type(self.conf["files"])))
             if(type(self.conf["files"]) is not list and
                 type(self.conf["files"]) is not tuple and
                 type(self.conf["files"]) is not str and
                 type(self.conf["files"]) is not unicode):
                 raise ValueError("Could not find the files to parse anywhere!")
         else:
-            if(self.conf["verbosity"] >= 2):
-                print("No key \"files\" in conf!")
+            logger.error("No key \"files\" in conf!")
             raise ValueError("Could not find the files to parse anywhere!")
 
         if("action" not in self.conf):

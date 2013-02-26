@@ -3,8 +3,9 @@
 __version__ = "0.1.1"
 
 import argparse
+import logging
 
-from auto_version.utils import ConfManager
+from auto_version.utils import ConfManager, logger
 from auto_version.parsers import BasicParser
 
 if __name__ == '__main__':
@@ -18,12 +19,26 @@ if __name__ == '__main__':
 
     args = vars(parser.parse_args())
 
-    cf = ConfManager(args)
-    conf = cf.get_conf()
-    print(conf)
-    p = BasicParser(files=conf["files"], style=conf["style"], action=conf["action"], current_version=conf["current_version"])
-    conf["current_version"] = p.perform()
-    del conf["verbosity"]
-    del conf["action"]
-    del conf["conf"]
-    cf.save_conf(conf)
+    loglvl = args["verbosity"]
+    if(loglvl == 0):
+        logger.setLevel(logging.ERROR)
+    elif(loglvl == 1):
+        logger.setLevel(logging.WARNING)
+    elif(loglvl == 2):
+        logger.setLevel(logging.INFO)
+    elif(loglvl == 3):
+        logger.setLevel(logging.DEBUG)
+
+    try:
+        logger.info("Starting auto_versionning v" + __version__)
+        cf = ConfManager(args)
+        conf = cf.get_conf()
+        logger.debug(str(conf))
+        p = BasicParser(files=conf["files"], style=conf["style"], action=conf["action"], current_version=conf["current_version"])
+        conf["current_version"] = p.perform()
+        del conf["verbosity"]
+        del conf["action"]
+        del conf["conf"]
+        cf.save_conf(conf)
+    except:
+        logger.exception("Something went wrong! Please report the following info, go to https///github.com/paulollivier/auto_versionning, and fill in an issue.")

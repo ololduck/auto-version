@@ -7,7 +7,7 @@ This module contains the main Parser class. This class is the one parsing the gi
 
 import os
 import re
-from auto_version.utils import import_style, detect_vcs
+from auto_version.utils import import_style, detect_vcs, logger
 
 
 class BasicParser:
@@ -78,19 +78,19 @@ class BasicParser:
         self.vcs = detect_vcs()()
         style = self.get_style_class_from_str(self.style)
         self.vcs.style = style
-        print(self.current_version)
+        logger.info(self.current_version)
         if(self.current_version == ""):
-            self.current_version = self.vcs.get_current_version()
-            print(self.current_version)
-        style = style(self.current_version)
+            self.current_version = self.vcs.get_current_version(with_status=True, increment=False)
+            logger.info("vcs version = " + self.current_version)
         if(self.action == "update"):
             if(self.vcs is not None):
                 new_version = self.vcs.get_current_version(with_status=True)  # FIXME
             else:
                 raise NotImplementedError("It seems you are trying to do some versionning sync with a non-supported versionning system (Are you really using one on this project?) Please feel free to send an issue at https://github.com/paulollivier/auto_versionning !")
         else:
+            style = style(self.current_version)
             new_version = style.increment(self.action)
-
+        logger.info("old version:" + self.current_version + " new version: " + new_version)
         for f in self.files:
             data = ""
             with open(f, 'r') as fd:

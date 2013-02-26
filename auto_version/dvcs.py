@@ -14,7 +14,8 @@ If the user wants to use DVCS system, the option --use-vcs should be present, or
 """
 
 import os
-from subprocess import check_output, check_call
+from subprocess import check_output, check_call, CalledProcessError
+from auto_version.utils import logger
 
 
 class BaseVCS:
@@ -30,18 +31,6 @@ class BaseVCS:
 
     def __init__(self):
         self.meta_info_present = self.__meta_dir__ in os.listdir(os.path.abspath('.'))
-
-    def purify_raw_version(self, version):
-        """
-        trims unused chars for version parsing.
-
-        e.g. v1.0.1 becomes 1.0.1
-
-        :param: version: a string representing the raw version got by the VCS.
-
-        :return: a string containing only the version string
-        """
-        pass
 
     def get_status(self):
         """
@@ -65,6 +54,10 @@ class BaseVCS:
 class Git(BaseVCS):
     """
     Provides git support, via git tags. As many tag their commits with release numbers, it is a good idea to sync auto-version with these tags.
+
+    .. warning:
+
+        for now, self.style must be set after instanciation, before any call to the instance
     """
 
     __meta_dir__ = ".git"
@@ -77,40 +70,54 @@ class Git(BaseVCS):
         """
         Updates the git index.
         """
-        check_call(["git", "update-index", "--refresh", "-q"])
+        try:
+            check_output(["git", "update-index", "--refresh", "-q"])  # Silencing output of git update-index
+        except CalledProcessError:
+            pass
 
     def _get_describe(self, increment=True):
-        if(not self.status):
-            s = check_output(["git", "describe", "--tags", "--dirty"])  # TODO: actually, we force users to use vX.X(...) tags. find an other way. This is a bit unsafe.
-            print(type(s), s)
-            self.status = [str(s) for s in s.strip('\n').split('-')]  # check_output returns bytes
-            print("self.status = " + str(self.status))
-            if(len(self.status) > 1 and increment):
-                print(self.status[0])
-                self.status[0] = self.style(self.status[0][1:]).increment()
+        s = check_output(["git", "describe", "--tags", "--dirty"])  # TODO: actually, we force users to use vX.X(...) tags. find an other way. This is a bit unsafe.
+        logger.debug(str(type(s)) + " " + s)
+        self.status = [str(s) for s in s.strip('\n').split('-')]  # check_output returns bytes
+        logger.debug("self.status = " + str(self.status))
+        if(len(self.status) > 1 and self.status[1] != "dirty" and increment):
+            logger.debug(self.status[0])
+            # self.status[0] = self.style(
+            #     self.style.get_pure_version_string(
+            #         self.status[0]
+            #         )
+            #     ).increment()
+            self.status[0] = self.style(
+                self.style.get_pure_version_string(
+                    self.style,
+                    self.status[0]
+                    )
+                ).increment()
+        else:
+            self.status[0] = self.style.get_pure_version_string(
+                self.style,
+                self.status[0]
+                )
 
         return self.status
 
     def get_status(self):
         self._update_index()
         if(self.status is None):
-            print(self._get_describe())
-        print("self.status fait %d de long" % len(self.status))
-        if(len(self.status) == 4):
-            print(self.status[1:])
-            return 'pre%s-%s-%s' % self.status[1:]
-        elif(len(self.status) == 3):
-            print(self.status[1:])
-            return "pre%s-%s" % (self.status[1], self.status[2])
+            logger.debug("Self.status is None. Updating... result:" + self._get_describe())
+        logger.debug("self.status is %d long" % len(self.status))
+        if(len(self.status) >= 3):
+            logger.debug(self.status[1:])
+            return "-pre%s-%s" % (self.status[1], self.status[2])
         else:
             return ""
 
     def get_current_version(self, with_status=False, increment=True):
         self._update_index()
-        print(self._get_describe(increment=increment))
+        logger.debug(self._get_describe(increment=increment))
         if(with_status):
-            print("".join((self.status[0][1:], self.get_status())))
-            return "".join((self.status[0][1:], self.get_status()))
+            logger.info("".join((self.status[0], self.get_status())))
+            return "".join((self.status[0], self.get_status()))
         return self.status[0]
 
     def set_version(self, version=None):
