@@ -31,6 +31,18 @@ class BaseVCS:
     def __init__(self):
         self.meta_info_present = self.__meta_dir__ in os.listdir(os.path.abspath('.'))
 
+    def purify_raw_version(self, version):
+        """
+        trims unused chars for version parsing.
+
+        e.g. v1.0.1 becomes 1.0.1
+
+        :param: version: a string representing the raw version got by the VCS.
+
+        :return: a string containing only the version string
+        """
+        pass
+
     def get_status(self):
         """
         Returns the `status` of the repository
@@ -57,42 +69,49 @@ class Git(BaseVCS):
 
     __meta_dir__ = ".git"
 
-    def __init__(self, style):
+    def __init__(self):
         self.status = None
-        self.style = style
         BaseVCS.__init__(self)
 
     def _update_index(self):
         """
         Updates the git index.
         """
-        check_call(["git", "update-index", "--refresh"])
+        check_call(["git", "update-index", "--refresh", "-q"])
 
-    def _get_describe(self):
+    def _get_describe(self, increment=True):
         if(not self.status):
             s = check_output(["git", "describe", "--tags", "--dirty"])  # TODO: actually, we force users to use vX.X(...) tags. find an other way. This is a bit unsafe.
-            self.status = [str(s) for s in self.status.strip('\n').split('-')]
-            if(len(self.status) > 1):
-                self.status[0] = self.style.increment(self.status[0])
+            print(type(s), s)
+            self.status = [str(s) for s in s.strip('\n').split('-')]  # check_output returns bytes
+            print("self.status = " + str(self.status))
+            if(len(self.status) > 1 and increment):
+                print(self.status[0])
+                self.status[0] = self.style(self.status[0][1:]).increment()
 
         return self.status
 
     def get_status(self):
         self._update_index()
-        self._get_describe()
-        if(len(self.status) == 3):
+        if(self.status is None):
+            print(self._get_describe())
+        print("self.status fait %d de long" % len(self.status))
+        if(len(self.status) == 4):
+            print(self.status[1:])
             return 'pre%s-%s-%s' % self.status[1:]
-        elif(len(self.status) == 4):
-            return 'pre%s-%s' % self.status[1:]
+        elif(len(self.status) == 3):
+            print(self.status[1:])
+            return "pre%s-%s" % (self.status[1], self.status[2])
         else:
             return ""
 
-    def get_current_version(self, with_status=False):
+    def get_current_version(self, with_status=False, increment=True):
         self._update_index()
-        self._get_describe()
+        print(self._get_describe(increment=increment))
         if(with_status):
-            return "".join(self.status[0][1:], self.get_status())
-        return self.status[0][1:]
+            print("".join((self.status[0][1:], self.get_status())))
+            return "".join((self.status[0][1:], self.get_status()))
+        return self.status[0]
 
     def set_version(self, version=None):
         if(version is not None):

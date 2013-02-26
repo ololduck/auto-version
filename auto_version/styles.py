@@ -23,6 +23,7 @@ class BaseStyle:
     """
 
     def __init__(self, current_version):
+        print("style = " + str(current_version))
         self.regex = re.compile(self.__format__)
         self.current_version = current_version
         if(self.regex.match(self.current_version) is None):

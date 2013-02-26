@@ -75,8 +75,14 @@ class BasicParser:
             This implementation may be quite long on large files!
         """
 
-        style = self.get_style_class_from_str(self.style)(self.current_version)
-        self.vcs = detect_vcs()(style)
+        self.vcs = detect_vcs()()
+        style = self.get_style_class_from_str(self.style)
+        self.vcs.style = style
+        print(self.current_version)
+        if(self.current_version == ""):
+            self.current_version = self.vcs.get_current_version()
+            print(self.current_version)
+        style = style(self.current_version)
         if(self.action == "update"):
             if(self.vcs is not None):
                 new_version = self.vcs.get_current_version(with_status=True)  # FIXME
