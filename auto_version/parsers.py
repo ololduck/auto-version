@@ -57,7 +57,7 @@ class BasicParser:
             raise ValueError("No style given")
 
         self.scm_prefix = ""
-        if(u"scm_prefix" in kwargs):
+        if("scm_prefix" in kwargs):
             self.scm_prefix = kwargs["scm_prefix"]
 
         if("current_version" in kwargs):
@@ -112,6 +112,6 @@ class BasicParser:
                 fd.write(data)
         if(self.vcs and self.action != "update"):
             logger.info("setting new version %s to SCM" % new_version)
-            self.vcs.set_version(version=new_version, prefix=self.scm_prefix)
+            self.vcs.set_version(files=self.files, version=new_version, prefix=self.scm_prefix)
 
         return new_version

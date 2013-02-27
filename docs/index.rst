@@ -6,7 +6,14 @@
 auto-version's documentation
 ============================
 
+.. warning::
+
+    THIS IS ALPHA GRADE SOFTWARE. PLEASE READ CAREFULLY THE PRESENT DOCUMENTATION
+
 .. toctree::
+
+.. contents:: Table of Contents
+   :depth: 3
 
 Installation
 ------------
@@ -29,7 +36,7 @@ It is intended to be used via a configuration file, by default named *version.co
 
 Here is the one used for this module:
 
-::
+.. code:: json
 
     {
         "files": "increment_version.py",
@@ -41,7 +48,7 @@ The ``style`` option is a string representing the name of the style class to use
 
 ``"files"`` may be a simple string, or an array, like this:
 
-::
+.. code:: json
 
     {
         "files": [
@@ -59,16 +66,45 @@ VCS Integration
 
 .. warning::
 
-    This is still a rather unstable feature, your workflow may be changed.
+    This is still a rather unstable feature, your workflow may be changed, and possibly destroyed.
 
 If verisonning system is detected (via the presence or not of a distinctive versionning directory, like ``.git``), ``increment_version.py`` uses the informations present in the SCM to determine the version numbers. For git, it is via the ``git tag`` and ``git describe`` commands;
 
-This still requires a ``version.conf`` file, but only two parameters are used::
+This still requires a ``version.conf`` file, but only three parameters are used::
 
     {
         "files": "file_to_manage",
-        "style": "Triplet"
+        "style": "Triplet",
+        "scm_prefix": "prefix to use for version tagging"
     }
+
+Sample Usage
+++++++++++++
+
+.. code:: bash
+
+    $ cd /tmp
+    $ git init testing
+    $ cd testing
+    $ echo "0.0.1" > hello.txt
+    $ echo '{ "files": "hello.txt", "style": "Triplet, "scm_prefix": ""}' > version.conf
+    $ git add hello.txt version.conf
+    $ git commit -m "Initial commit"
+    $ git tag 0.0.1
+    $ increment_version.py update
+    $ cat hello.txt
+    0.0.1
+    $ echo "hi\!" >> hello.txt
+    $ git add hello.txt
+    $ git commit -m "Modified hello.txt to better reflect my understanding of the world, from a programmer\'s perspective"
+    $ increment_version.py update
+    $ cat hello.txt
+    0.0.2-pre1-0bf45de
+    hi!
+    $ increment_version.py patch
+    $ cat hello.txt
+    0.0.2
+    hi!
 
 
 
@@ -80,6 +116,8 @@ In-depth documentation for trve l33t hackerz of the internets
 
 Organisation
 ~~~~~~~~~~~~
+
+.. include:: organisation.rst
 
 Modules detail
 ~~~~~~~~~~~~~~

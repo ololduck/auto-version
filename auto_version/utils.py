@@ -17,6 +17,9 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
+import auto_version.styles
+
+
 def import_style(name):
     """
     Simple utility function, taken from the __import__ docstring to import classes.
