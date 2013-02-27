@@ -116,12 +116,16 @@ class Git(BaseVCS):
         return self.status[0]
 
     def set_version(self, files, version, prefix=""):
-        add_cmd = ["git", "add", "version.conf"]
+        check_call(["git", "add", "version.conf"])
+        add_cmd = ["git", "add"]
         if(type(files) is list or type(files) is tuple):
             for f in files:
                 add_cmd.append(f)
         else:
             add_cmd.append(files)
+
+        logger.debug(str(add_cmd))
+        logger.info("executing command: " + " ".join(add_cmd))
         check_call(add_cmd)
         check_call(["git", "commit", "-m", "auto_version: added files for whom version has changed."])
-        check_call(["git", "tag", prefix + version])
+        check_call(["git", "tag", "-f", prefix + version])
