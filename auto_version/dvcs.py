@@ -116,7 +116,7 @@ class Git(BaseVCS):
         return self.status[0]
 
     def set_version(self, files, version, prefix=""):
-        add_cmd = ["git", "add"]
+        add_cmd = ["git", "add", "version.conf"]
         if(type(files) is list or type(files) is tuple):
             for f in files:
                 add_cmd.append(f)
