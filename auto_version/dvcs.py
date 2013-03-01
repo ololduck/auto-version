@@ -46,7 +46,7 @@ class BaseVCS:
 
     def set_version(self, version=None):
         """
-        When a verison increment is made, update the vcs
+        When a version increment is made, update the vcs
         """
         raise NotImplementedError("This versioning class is not designed to be used, but rather as a base for actual implementations to rely on.")
 
@@ -129,3 +129,13 @@ class Git(BaseVCS):
         check_call(add_cmd)
         check_call(["git", "commit", "-m", "auto_version: added files for whom version has changed."])
         check_call(["git", "tag", "-f", prefix + version])
+
+
+class Mercurial(BaseVCS):
+    # hg log -r . --template '{latesttag}-{latesttagdistance}-{node|short}\n'
+    # warning: with each tag, mercurial uses a commit to tag the current commit. So it means that never ever will the distance to last tag be inferior to 1
+    __meta_dir__ = ".hg"
+
+    def __init__(self):
+        self.status = None
+        BaseVCS.__init__(self)

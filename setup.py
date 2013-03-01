@@ -10,7 +10,7 @@ setup(
     version=__version__,
     author='Paul Ollivier',
     author_email='contact@paulollivier.fr',
-    url='https://github.com/paulollivier/auto_versionning',
+    url='https://github.com/paulollivier/auto-version',
     license=open('LICENSE.txt', 'r').read(),
     packages=['auto_version'],
     description='A not-so-simple versioning semi-automation.',

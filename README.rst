@@ -2,18 +2,18 @@
 auto-version
 ============
 
-+---------+-----------------------------------------------------------------------------------+
-| master  | .. image:: https://travis-ci.org/paulollivier/auto_versionning.png?branch=master  |
-+---------+-----------------------------------------------------------------------------------+
-| develop | .. image:: https://travis-ci.org/paulollivier/auto_versionning.png?branch=develop |
-+---------+-----------------------------------------------------------------------------------+
++---------+-------------------------------------------------------------------------------+
+| master  | .. image:: https://travis-ci.org/paulollivier/auto-version.png?branch=master  |
++---------+-------------------------------------------------------------------------------+
+| develop | .. image:: https://travis-ci.org/paulollivier/auto-version.png?branch=develop |
++---------+-------------------------------------------------------------------------------+
 
 This project consists of a small utility to perform semi-automatic
 version number increase.
 
-It is designed for use with a version control system like `git <http://git-scm.org>`_
+It is designed for use with a version control system like `git <http://git-scm.org>`_.
 
-Documentation is available at `ReadTheDocs <https://auto-version.readthedocs.org/>`_
+Documentation is available at `ReadTheDocs <https://auto-version.readthedocs.org/>`_. If you want the lastest stable release, please look at the ``latest`` documentation. If you want to get information about the latest features, please look at the ``develop`` documentation. For now, I recommand to read the ``develop`` branch.
 
 Contributing
 ------------

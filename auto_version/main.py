@@ -44,7 +44,7 @@ def main():
         del conf["conf"]
         cf.save_conf(conf)
     except:
-        logger.exception("Something went wrong! Please report the following info, go to https://github.com/paulollivier/auto_versionning, and fill in an issue.")
+        logger.exception("Something went wrong! Please report the following info, go to https://github.com/paulollivier/auto-version, and fill in an issue.")
 
 if __name__ == '__main__':
     main()
