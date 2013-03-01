@@ -22,25 +22,27 @@ class TestBasicParser(unittest.TestCase):
                 os.remove(f)
         else:
             os.remove(self.conf["files"])
+        if(os.path.exists("testing_dir") and os.path.isdir("testing_dir")):
+            os.rmdir("testing_dir")
 
     def test_insanciation(self):
-        self.p = parsers.BasicParser(files=self.conf["files"], style=self.conf["style"], action=self.conf["action"], current_version=self.conf["current_version"])
+        self.p = parsers.BasicParser(conf=self.conf)
         self.assertIsInstance(self.p, parsers.BasicParser)
 
     def test_single_file_instanciation(self):
         files = self.conf["files"]
         self.conf["files"] = "testfile1.txt"
-        self.p = parsers.BasicParser(files=self.conf["files"], style=self.conf["style"], action=self.conf["action"], current_version=self.conf["current_version"])
+        self.p = parsers.BasicParser(conf=self.conf)
         self.assertIsInstance(self.p, parsers.BasicParser)
         self.conf["files"] = files
 
     def test_directory_instanciation(self):
         os.mkdir("testing_dir")
-        self.assertRaises(NotImplementedError, parsers.BasicParser, files="testing_dir", style=self.conf["style"], action=self.conf["action"], current_version=self.conf["current_version"])
+        self.assertRaises(NotImplementedError, parsers.BasicParser, conf=self.conf)
         os.rmdir("testing_dir")
 
     def test_no_files_instanciation(self):
-        self.assertRaises(ValueError, parsers.BasicParser, style=self.conf["style"], action=self.conf["action"], current_version=self.conf["current_version"])
+        self.assertRaises(ValueError, parsers.BasicParser, conf=self.conf)
 
     def test_perform(self):
         if(self.p is None):

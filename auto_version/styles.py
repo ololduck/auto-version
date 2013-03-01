@@ -49,7 +49,7 @@ class Revision(BaseStyle):
     It is used in some DCVS, such as mercurial, or svn.
     """
 
-    __format__ = 'r\d+'
+    __format__ = r'r\d+'
 
     def increment(self, level=None):
         """

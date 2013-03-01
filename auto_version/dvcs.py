@@ -38,13 +38,13 @@ class BaseVCS:
         """
         raise NotImplementedError("This versioning class is not designed to be used, but rather as a base for actual implementations to rely on.")
 
-    def get_current_version(self, with_status=False):
+    def get_current_version(self, with_status=False, increment=True):
         """
         Return the current version, from the state of the repository.
         """
         raise NotImplementedError("This versioning class is not designed to be used, but rather as a base for actual implementations to rely on.")
 
-    def set_version(self, version=None):
+    def set_version(self, files, version, prefix=""):
         """
         When a version increment is made, update the vcs
         """
@@ -76,7 +76,7 @@ class Git(BaseVCS):
             pass
 
     def _get_describe(self, increment=True):
-        s = check_output(["git", "describe", "--tags", "--dirty"])  # TODO: actually, we force users to use vX.X(...) tags. find an other way. This is a bit unsafe.
+        s = check_output(["git", "describe", "--tags", "--dirty"])
         logger.debug(str(type(s)) + " " + s)
         self.status = [str(s) for s in s.strip('\n').split('-')]  # check_output returns bytes
         logger.debug("self.status = " + str(self.status))
@@ -116,7 +116,7 @@ class Git(BaseVCS):
         return self.status[0]
 
     def set_version(self, files, version, prefix=""):
-        check_call(["git", "add", "version.conf"])
+        check_call(["git", "add", "version.conf"])  # This causes a problem, because in the current configuration, we don't save the version.conf file until the end of auto_version.main:main.
         add_cmd = ["git", "add"]
         if(type(files) is list or type(files) is tuple):
             for f in files:
@@ -125,7 +125,7 @@ class Git(BaseVCS):
             add_cmd.append(files)
 
         logger.debug(str(add_cmd))
-        logger.info("executing command: " + " ".join(add_cmd))
+        logger.info("Executing command: " + " ".join(add_cmd))
         check_call(add_cmd)
         check_call(["git", "commit", "-m", "auto_version: added files for whom version has changed."])
         check_call(["git", "tag", "-f", prefix + version])

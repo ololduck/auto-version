@@ -1,1 +1,2 @@
+v0.1.3, 01 March 2013 -- Git integration
 v0.1.0, 18 February 2013 -- Initial release.
