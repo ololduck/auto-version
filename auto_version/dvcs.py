@@ -139,3 +139,4 @@ class Mercurial(BaseVCS):
     def __init__(self):
         self.status = None
         BaseVCS.__init__(self)
+        raise NotImplementedError("Not yet available, sorry")

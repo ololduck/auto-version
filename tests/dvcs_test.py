@@ -39,8 +39,9 @@ class GitTest(unittest.TestCase):
         self.assertEqual("0.0.2", str(self.git.get_current_version(with_status=False, increment=True)))
         self.assertNotEqual("0.0.1", str(self.git.get_current_version(with_status=True, increment=False)))
         self.assertNotEqual("0.0.2", str(self.git.get_current_version(with_status=True, increment=True)))
-        regex = self.git.style("0.0.0").__format__ + r"\-pre\d+\-\d{8,10}"
+        regex = self.git.style("0.0.0").__format__ + r'\-pre\d+\-[a-zA-Z0-9]{8}'
         value = self.git.get_current_version(with_status=True, increment=False)
+        utils.logger.debug("regex: %s, value: %s" % (regex, value))
         self.assertNotEqual(None, re.match(regex, value))
 
 

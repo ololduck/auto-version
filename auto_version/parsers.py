@@ -22,13 +22,12 @@ class BasicParser:
         * action *optionnal*: a string or number representing the action to perform.
     """
 
-    files = []
-
     def get_style_class_from_str(self, style):
         return import_style(style)
 
     def __init__(self, conf):
         self.conf = conf
+        logger.debug("parser: self.conf=" + str(self.conf))
         if("files" in self.conf):
             if(type(self.conf["files"]) is list or type(self.conf["files"]) is tuple):
                 for f in self.conf["files"]:
@@ -90,7 +89,7 @@ class BasicParser:
                 style_instance = style(new_version)
                 new_version = style_instance.increment(self.conf["action"])
         logger.info("old version:" + self.conf["current_version"] + " new version: " + new_version)
-        for f in self.files:
+        for f in self.conf["files"]:
             data = ""
             with open(f, 'r') as fd:
                 data = fd.read()

@@ -5,8 +5,8 @@ __version__ = "0.1.3"
 import argparse
 import logging
 
-from utils import ConfManager, logger
-from parsers import BasicParser
+from auto_version.utils import ConfManager, logger
+from auto_version.parsers import BasicParser
 
 def main():
     parser = argparse.ArgumentParser()
@@ -43,6 +43,7 @@ def main():
         del conf["verbosity"]
         del conf["action"]
         del conf["conf"]
+        del conf["commit"]
         cf.save_conf(conf)
     except:
         logger.exception("Something went wrong! Please report the following info, go to https://github.com/paulollivier/auto-version, and fill in an issue.")

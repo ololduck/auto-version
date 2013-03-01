@@ -37,12 +37,18 @@ class TestBasicParser(unittest.TestCase):
         self.conf["files"] = files
 
     def test_directory_instanciation(self):
+        files = self.conf["files"]
         os.mkdir("testing_dir")
+        self.conf["files"] = "testing_dir"
         self.assertRaises(NotImplementedError, parsers.BasicParser, self.conf)
+        self.conf["files"] = files
         os.rmdir("testing_dir")
 
     def test_no_files_instanciation(self):
+        files = self.conf["files"]
+        del self.conf["files"]
         self.assertRaises(ValueError, parsers.BasicParser, self.conf)
+        self.conf["files"] = files
 
     def test_perform(self):
         if(self.p is None):
