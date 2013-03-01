@@ -36,6 +36,7 @@ class BaseStyle:
         Returns only the part matching the version string, so we can isolate it in a string
         """
         match = re.search(style_class.__format__, string)
+        logger.debug("match object: " + str(match))
         if(match):
             return string[match.start():match.end()]
         return None

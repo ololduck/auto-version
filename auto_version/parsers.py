@@ -7,7 +7,7 @@ This module contains the main Parser class. This class is the one parsing the gi
 
 import os
 import re
-from utils import import_style, detect_vcs, logger
+from auto_version.utils import import_style, detect_vcs, logger
 
 
 class BasicParser:

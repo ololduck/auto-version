@@ -17,8 +17,8 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
-import styles
-import dvcs
+import auto_version.styles
+import auto_version.dvcs
 
 
 def import_style(name):
