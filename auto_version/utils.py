@@ -33,7 +33,7 @@ from auto_version.dvcs import *
 
 def detect_vcs():
     """
-    Detects the versionning system in use.
+    Detects the versioning system in use.
 
     .. attention::
 

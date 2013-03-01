@@ -30,7 +30,7 @@ if __name__ == '__main__':
         logger.setLevel(logging.DEBUG)
 
     try:
-        logger.info("Starting auto_versionning v" + __version__)
+        logger.info("Starting auto-version v" + __version__)
         cf = ConfManager(args)
         conf = cf.get_conf()
         logger.debug(str(conf))
@@ -44,4 +44,4 @@ if __name__ == '__main__':
         del conf["conf"]
         cf.save_conf(conf)
     except:
-        logger.exception("Something went wrong! Please report the following info, go to https///github.com/paulollivier/auto_versionning, and fill in an issue.")
+        logger.exception("Something went wrong! Please report the following info, go to https///github.com/paulollivier/auto_versioning, and fill in an issue.")
