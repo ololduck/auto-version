@@ -58,9 +58,9 @@ class StyleRevisionTest(unittest.TestCase):
         self.assertRaises(ValueError, styles.Revision, "1")
 
     def test_version_string_epuration(self):
-        self.assertEqual("r1", styles.BaseStyle.get_pure_version_string(styles.Triplet, "revr1"))
+        self.assertEqual("r1", styles.BaseStyle.get_pure_version_string(styles.Revision, "revr1"))
 
-        self.assertEqual("r1", styles.BaseStyle.get_pure_version_string(styles.Triplet, "r1"))
+        self.assertEqual("r1", styles.BaseStyle.get_pure_version_string(styles.Revision, "r1"))
 
 
 if __name__ == '__main__':

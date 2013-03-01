@@ -36,7 +36,7 @@ class BaseStyle:
         Returns only the part matching the version string, so we can isolate it in a string
         """
         match = re.search(style_class.__format__, string)
-        logger.debug("match object: " + str(match))
+        logger.debug("regex: %s, string %s, match object: %s" % (style_class.__format__, string, str(match)))
         if(match):
             return string[match.start():match.end()]
         return None
@@ -45,7 +45,7 @@ class BaseStyle:
 class Revision(BaseStyle):
     """
     Revision format is a simple, one-number versioning format: r<number>
-    for example, r7 is the version after r6.
+    for instance, r7 is the version after r6.
 
     It is used in some DCVS, such as mercurial, or svn.
     """

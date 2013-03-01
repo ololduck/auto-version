@@ -47,7 +47,7 @@ def detect_vcs():
     klass = None
     for el in dir_list:
         if(el == ".git"):
-            klass = dvcs.Git
+            klass = auto_version.dvcs.Git
             break
     return klass
 
