@@ -8,7 +8,7 @@ import logging
 from auto_version.utils import ConfManager, logger
 from auto_version.parsers import BasicParser
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('action', default=None, help="The action to perform, eg. increment 'build', 'patch', 'rev' ... Please see documentation for full list")
     parser.add_argument('--files', '-f', nargs="+", help="the file[s] to check for version string[s]")
@@ -44,4 +44,7 @@ if __name__ == '__main__':
         del conf["conf"]
         cf.save_conf(conf)
     except:
-        logger.exception("Something went wrong! Please report the following info, go to https///github.com/paulollivier/auto_versioning, and fill in an issue.")
+        logger.exception("Something went wrong! Please report the following info, go to https://github.com/paulollivier/auto_versionning, and fill in an issue.")
+
+if __name__ == '__main__':
+    main()

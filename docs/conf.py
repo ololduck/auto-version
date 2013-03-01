@@ -19,7 +19,7 @@ import os
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('..'))
 
-from increment_version import __version__
+from auto_version.main import __version__
 
 # -- General configuration -----------------------------------------------------
 
