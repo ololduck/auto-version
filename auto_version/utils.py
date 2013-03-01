@@ -7,6 +7,49 @@ Contains some utilities used in the project. You should not have to bother with 
 
 import os
 import json
+import logging
+
+logger = logging.getLogger("auto_version")
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+logger.addHandler(ch)
+
+
+import auto_version.styles
+import auto_version.dvcs
+
+
+def import_style(name):
+    """
+    Simple utility function, taken from the __import__ docstring to import classes.
+    """
+    mod = __import__('auto_version.styles', fromlist=[name])
+    klass = getattr(mod, name)
+    return klass
+
+
+def detect_vcs():
+    """
+    Detects the versioning system in use.
+
+    .. attention::
+
+        it does not currently handle multi-vcs systems
+
+    .. todo::
+
+        find a way to make this function auto-updating according to the classes loaded
+
+    """
+    dir_list = os.listdir(os.path.abspath('.'))
+    klass = None
+    for el in dir_list:
+        if(el == ".git"):
+            klass = auto_version.dvcs.Git
+            break
+    return klass
 
 
 class ConfManager:
@@ -31,30 +74,27 @@ class ConfManager:
         self.file_conf = None
 
         if(os.path.exists(self.cli_args["conf"])):
-            if(self.cli_args["verbosity"] >= 2):
-                print("Found config file %s" % self.cli_args["conf"])
+            logger.info("Found config file %s" % self.cli_args["conf"])
             with open(self.cli_args["conf"], 'r') as f:
                 data = f.read()
-                if(self.cli_args["verbosity"] >= 2):
-                    print(data)
+                logger.debug(data)
                 self.file_conf = json.loads(data)
             self.conf = self.file_conf
+        if(self.cli_args["current_version"] == ""):
+            del self.cli_args["current_version"]
+        logger.debug("cli_args: " + str(self.cli_args))
         self.conf.update(self.cli_args)
         if("files" in self.conf):
-            if(self.conf["verbosity"] >= 3):
-                print(self.conf["files"], type(self.conf["files"]))
+            logger.info(self.conf["files"] + " " + str(type(self.conf["files"])))
             if(type(self.conf["files"]) is not list and
                 type(self.conf["files"]) is not tuple and
                 type(self.conf["files"]) is not str and
                 type(self.conf["files"]) is not unicode):
                 raise ValueError("Could not find the files to parse anywhere!")
         else:
-            if(self.conf["verbosity"] >= 2):
-                print("No key \"files\" in conf!")
+            logger.error("No key \"files\" in conf!")
             raise ValueError("Could not find the files to parse anywhere!")
 
-        if("current_version" not in self.conf):
-            raise ValueError("Could not find current verion. This may lead to serious things. I would personnaly prefere that you use a correct configuration file.")
         if("action" not in self.conf):
             raise ValueError("no action given! nothing to do \\o/")
 

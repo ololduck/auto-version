@@ -6,7 +6,7 @@ auto_version.styles
 
 auto_version.styles is the holder of all the different coding styles.
 
-Each style is built on top of others, as they have multiple features in common. For instance, a Revision-based versionning has a feature used in <major>.<minor>.
+Each style is built on top of others, as they have multiple features in common. For instance, a Revision-based versioning has a feature used in <major>.<minor>.
 
 I am still thinking about it.
 
@@ -15,6 +15,7 @@ I am still thinking about it.
 
 """
 import re
+from auto_version.utils import logger
 
 
 class BaseStyle:
@@ -23,16 +24,28 @@ class BaseStyle:
     """
 
     def __init__(self, current_version):
+        logger.debug("style = " + str(current_version))
         self.regex = re.compile(self.__format__)
         self.current_version = current_version
         if(self.regex.match(self.current_version) is None):
             raise ValueError("The current version you provided does not correspond to the chosen version style. Please review your configuration file and/or your cli args.")
 
+    @staticmethod
+    def get_pure_version_string(style_class, string):
+        """
+        Returns only the part matching the version string, so we can isolate it in a string
+        """
+        match = re.search(style_class.__format__, string)
+        logger.debug("regex: %s, string %s, match object: %s" % (style_class.__format__, string, str(match)))
+        if(match):
+            return string[match.start():match.end()]
+        return None
+
 
 class Revision(BaseStyle):
     """
-    Revision format is a simple, one-number versionning format: r<number>
-    for example, r7 is the version after r6.
+    Revision format is a simple, one-number versioning format: r<number>
+    for instance, r7 is the version after r6.
 
     It is used in some DCVS, such as mercurial, or svn.
     """
@@ -88,7 +101,7 @@ class Triplet(BaseStyle):
     """
     Trpilet format is in the form <major>.<minor>.<patch>
 
-    It is the most commonly used versionning 'style'.
+    It is the most commonly used versioning 'style'.
 
     Examples:
         * 0.0.1

@@ -6,6 +6,8 @@ python:
   - "3.2"
 # command to install dependencies
 install:
+  - git config --global user.email "auto-version-test@travis.ci"
+  - git config --global user.name "Testing on Travis CI"
   - pip install . --use-mirrors
   - pip install -r requirements.txt --use-mirrors
 # command to run tests
