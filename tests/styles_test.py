@@ -47,5 +47,6 @@ class StyleRevisionTest(unittest.TestCase):
     def test_not_correct_current_version(self):
         self.assertRaises(ValueError, styles.Revision, "1")
 
+
 if __name__ == '__main__':
     unittest.main()

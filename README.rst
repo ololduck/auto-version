@@ -26,4 +26,8 @@ If you have a versionning style you would like to be merged in the main reposito
 DISCLAIMER
 ----------
 
-This is beta software. Do not use on critical environments, as it is not totaly safe for now. For instance, it may alter any other string matching the current version umber when running the version increment. This is not really likely to happen, but it must be known. A way to fix this problem is being thought.
+.. warning::
+
+    This is ALPHA software. Do not use on critical environments, as it is not safe at all for now. For instance, it may alter any other string matching the current version umber when running the version increment. This is not really likely to happen, but it must be known. A way to fix this problem is being thought.
+
+    PLEASE READ THE DOCUMENTATION BEFORE ANY USE

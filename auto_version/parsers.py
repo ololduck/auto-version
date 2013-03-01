@@ -7,15 +7,7 @@ This module contains the main Parser class. This class is the one parsing the gi
 
 import os
 import re
-
-
-def import_style(name):
-    """
-    Simple utility function, taken from the __import__ docstring to import classes.
-    """
-    mod = __import__('auto_version.styles', fromlist=[name])
-    klass = getattr(mod, name)
-    return klass
+from auto_version.utils import import_style, detect_vcs, logger
 
 
 class BasicParser:
@@ -33,6 +25,10 @@ class BasicParser:
     files = []
     current_version = ""
     action = None
+    scm_prefix = ""
+
+    def get_style_class_from_str(self, style):
+        return import_style(style)
 
     def __init__(self, **kwargs):
         if("files" in kwargs):
@@ -60,12 +56,16 @@ class BasicParser:
         else:
             raise ValueError("No style given")
 
+        self.scm_prefix = ""
+        if("scm_prefix" in kwargs):
+            self.scm_prefix = kwargs["scm_prefix"]
+
         if("current_version" in kwargs):
             if(type(kwargs["current_version"]) is not str and type(kwargs["current_version"]) is not unicode):
                 raise RuntimeError("current_version is not a string!")
             self.current_version = kwargs["current_version"]
         else:
-            print("No current version given. I will search for it now, but it may be long, and may be incorrect.")
+            raise ValueError("Could not find current verion. This may lead to serious things. I would personnaly prefere that you use a correct configuration file.")
             # TODO: Create a function search for the style pattern in the files.
 
         if("action" in kwargs):
@@ -79,9 +79,29 @@ class BasicParser:
 
             This implementation may be quite long on large files!
         """
-        s = import_style(self.style)
-        style = s(self.current_version)
-        new_version = style.increment(self.action)
+
+        self.vcs = detect_vcs()()
+        style = self.get_style_class_from_str(self.style)
+        self.vcs.style = style
+        logger.info(self.current_version)
+        if(self.current_version == ""):
+            self.current_version = self.vcs.get_current_version(with_status=True, increment=False)
+            logger.info("vcs version = " + self.current_version)
+        if(self.action == "update"):
+            if(self.vcs is not None):
+                new_version = self.vcs.get_current_version(with_status=True)  # FIXME
+            else:
+                raise NotImplementedError("It seems you are trying to do some versionning sync with a non-supported versionning system (Are you really using one on this project?) Please feel free to send an issue at https://github.com/paulollivier/auto_versionning !")
+        else:
+            try:
+                style_instance = style(self.current_version)
+                new_version = style_instance.increment(self.action)
+            except:
+                logger.info("Style instance reported error trying to process version number. Trying with SCM info")
+                new_version = self.vcs.get_current_version(with_status=False, increment=False)
+                style_instance = style(new_version)
+                new_version = style_instance.increment(self.action)
+        logger.info("old version:" + self.current_version + " new version: " + new_version)
         for f in self.files:
             data = ""
             with open(f, 'r') as fd:
@@ -90,4 +110,8 @@ class BasicParser:
                 data = data.replace(self.current_version, new_version)
             with open(f, 'w+') as fd:
                 fd.write(data)
+        if(self.vcs and self.action != "update"):
+            logger.info("setting new version %s to SCM" % new_version)
+            self.vcs.set_version(files=self.files, version=new_version, prefix=self.scm_prefix)
+
         return new_version
