@@ -39,7 +39,7 @@ Here is the one used for this module:
 .. code:: json
 
     {
-        "files": "increment_version.py",
+        "files": "auto_version/main.py",
         "current_version": "0.1.0",
         "style": "Triplet"
     }
@@ -68,7 +68,7 @@ VCS Integration
 
     This is still a rather unstable feature, your workflow may be changed, and possibly destroyed.
 
-If versioning system is detected (via the presence or not of a distinctive versioning directory, like ``.git``), ``increment_version.py`` uses the informations present in the SCM to determine the version numbers. For git, it is via the ``git tag`` and ``git describe`` commands;
+If versioning system is detected (via the presence or not of a distinctive versioning directory, like ``.git``), ``auto-version`` uses the informations present in the SCM to determine the version numbers. For git, it is via the ``git tag`` and ``git describe`` commands;
 
 This still requires a ``version.conf`` file, but only three parameters are used::
 
@@ -91,17 +91,17 @@ Sample Usage
     $ git add hello.txt version.conf
     $ git commit -m "Initial commit"
     $ git tag 0.0.1
-    $ increment_version.py update
+    $ auto-version update
     $ cat hello.txt
     0.0.1
     $ echo "hi\!" >> hello.txt
     $ git add hello.txt
     $ git commit -m "Modified hello.txt to better reflect my understanding of the world, from a programmer\'s perspective"
-    $ increment_version.py update
+    $ auto-version update
     $ cat hello.txt
     0.0.2-pre1-0bf45de
     hi!
-    $ increment_version.py patch
+    $ auto-version patch
     $ cat hello.txt
     0.0.2
     hi!
