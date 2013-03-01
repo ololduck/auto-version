@@ -1,6 +1,6 @@
-================
-auto_versionning
-================
+============
+auto-version
+============
 
 +---------+-----------------------------------------------------------------------------------+
 | master  | .. image:: https://travis-ci.org/paulollivier/auto_versionning.png?branch=master  |
@@ -11,8 +11,7 @@ auto_versionning
 This project consists of a small utility to perform semi-automatic
 version number increase.
 
-It is designed for use with a versionning system, supporting event
-hooks, like `git <http://git-scm.org>`_
+It is designed for use with a version control system like `git <http://git-scm.org>`_
 
 Documentation is available at `ReadTheDocs <https://auto-version.readthedocs.org/>`_
 
@@ -21,7 +20,7 @@ Contributing
 
 Please feel free to contribute.
 
-If you have a versionning style you would like to be merged in the main repository, and distributed via PyPI, send a pull request.
+If you have a versioning style you would like to be merged in the main repository, and distributed via PyPI, send a pull request.
 
 DISCLAIMER
 ----------

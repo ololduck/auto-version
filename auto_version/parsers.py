@@ -12,7 +12,7 @@ from auto_version.utils import import_style, detect_vcs, logger
 
 class BasicParser:
     """
-    This Class is a basic parser. It takes a list of files in argument, and the format of the versionning system, and performs the replacement.
+    This Class is a basic parser. It takes a list of files in argument, and the format of the versioning system, and performs the replacement.
 
 
     Expected instanciation arguments are:
@@ -91,7 +91,7 @@ class BasicParser:
             if(self.vcs is not None):
                 new_version = self.vcs.get_current_version(with_status=True)  # FIXME
             else:
-                raise NotImplementedError("It seems you are trying to do some versionning sync with a non-supported versionning system (Are you really using one on this project?) Please feel free to send an issue at https://github.com/paulollivier/auto_versionning !")
+                raise NotImplementedError("It seems you are trying to do some versioning sync with a non-supported versioning system (Are you really using one on this project?) Please feel free to send an issue at https://github.com/paulollivier/auto_versioning !")
         else:
             try:
                 style_instance = style(self.current_version)

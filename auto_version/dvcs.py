@@ -2,9 +2,9 @@
 auto_version.dvcs
 ~~~~~~~~~~~~~~~~~
 
-This modules contains all the implementation for versionning system automation.
+This modules contains all the implementation for versioning system automation.
 
-see `Issue#1 <https://github.com/paulollivier/auto_versionning/issues/1>`_
+see `Issue#1 <https://github.com/paulollivier/auto_versioning/issues/1>`_
 
 The resulting version number will be in the form `<ChosenStyle>+<VCSStyle>`.
 
@@ -36,19 +36,19 @@ class BaseVCS:
         """
         Returns the `status` of the repository
         """
-        raise NotImplementedError("This versionning class is not designed to be used, but rather as a base for actual implementations to rely on.")
+        raise NotImplementedError("This versioning class is not designed to be used, but rather as a base for actual implementations to rely on.")
 
     def get_current_version(self, with_status=False):
         """
         Return the current version, from the state of the repository.
         """
-        raise NotImplementedError("This versionning class is not designed to be used, but rather as a base for actual implementations to rely on.")
+        raise NotImplementedError("This versioning class is not designed to be used, but rather as a base for actual implementations to rely on.")
 
     def set_version(self, version=None):
         """
         When a verison increment is made, update the vcs
         """
-        raise NotImplementedError("This versionning class is not designed to be used, but rather as a base for actual implementations to rely on.")
+        raise NotImplementedError("This versioning class is not designed to be used, but rather as a base for actual implementations to rely on.")
 
 
 class Git(BaseVCS):

@@ -68,7 +68,7 @@ VCS Integration
 
     This is still a rather unstable feature, your workflow may be changed, and possibly destroyed.
 
-If verisonning system is detected (via the presence or not of a distinctive versionning directory, like ``.git``), ``increment_version.py`` uses the informations present in the SCM to determine the version numbers. For git, it is via the ``git tag`` and ``git describe`` commands;
+If versioning system is detected (via the presence or not of a distinctive versioning directory, like ``.git``), ``increment_version.py`` uses the informations present in the SCM to determine the version numbers. For git, it is via the ``git tag`` and ``git describe`` commands;
 
 This still requires a ``version.conf`` file, but only three parameters are used::
 

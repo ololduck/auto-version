@@ -6,7 +6,7 @@ auto_version.styles
 
 auto_version.styles is the holder of all the different coding styles.
 
-Each style is built on top of others, as they have multiple features in common. For instance, a Revision-based versionning has a feature used in <major>.<minor>.
+Each style is built on top of others, as they have multiple features in common. For instance, a Revision-based versioning has a feature used in <major>.<minor>.
 
 I am still thinking about it.
 
@@ -43,7 +43,7 @@ class BaseStyle:
 
 class Revision(BaseStyle):
     """
-    Revision format is a simple, one-number versionning format: r<number>
+    Revision format is a simple, one-number versioning format: r<number>
     for example, r7 is the version after r6.
 
     It is used in some DCVS, such as mercurial, or svn.
@@ -100,7 +100,7 @@ class Triplet(BaseStyle):
     """
     Trpilet format is in the form <major>.<minor>.<patch>
 
-    It is the most commonly used versionning 'style'.
+    It is the most commonly used versioning 'style'.
 
     Examples:
         * 0.0.1
