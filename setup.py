@@ -14,7 +14,7 @@ setup(
     url='https://github.com/paulollivier/auto_versionning',
     license=open('LICENSE.txt', 'r').read(),
     packages=['auto_version'],
-    description='A not-so-simple versionning semi-automation.',
+    description='A not-so-simple versioning semi-automation.',
     long_description=open('README.rst', 'r').read(),
     requires=["argparse"],
     classifiers=(
