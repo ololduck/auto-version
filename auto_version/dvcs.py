@@ -15,7 +15,7 @@ If the user wants to use DVCS system, the option --use-vcs should be present, or
 
 import os
 from subprocess import check_output, check_call, CalledProcessError
-from auto_version.utils import logger
+from utils import logger
 
 
 class BaseVCS:

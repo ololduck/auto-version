@@ -11,7 +11,7 @@ class TestBasicParser(unittest.TestCase):
     p = None
 
     def setUp(self):
-        self.conf = {"files": ["testfile1.txt", "testfile2.txt"], "style": "Doublet", "action": "minor", "current_version": "0.0"}
+        self.conf = {"files": ["testfile1.txt", "testfile2.txt"], "style": "Doublet", "action": "minor", "current_version": "0.0", "commit": False}
         for f in self.conf["files"]:
             with open(f, 'w+') as fd:
                 fd.write(""""version = '0.0'\n""")
@@ -26,23 +26,23 @@ class TestBasicParser(unittest.TestCase):
             os.rmdir("testing_dir")
 
     def test_insanciation(self):
-        self.p = parsers.BasicParser(conf=self.conf)
+        self.p = parsers.BasicParser(self.conf)
         self.assertIsInstance(self.p, parsers.BasicParser)
 
     def test_single_file_instanciation(self):
         files = self.conf["files"]
         self.conf["files"] = "testfile1.txt"
-        self.p = parsers.BasicParser(conf=self.conf)
+        self.p = parsers.BasicParser(self.conf)
         self.assertIsInstance(self.p, parsers.BasicParser)
         self.conf["files"] = files
 
     def test_directory_instanciation(self):
         os.mkdir("testing_dir")
-        self.assertRaises(NotImplementedError, parsers.BasicParser, conf=self.conf)
+        self.assertRaises(NotImplementedError, parsers.BasicParser, self.conf)
         os.rmdir("testing_dir")
 
     def test_no_files_instanciation(self):
-        self.assertRaises(ValueError, parsers.BasicParser, conf=self.conf)
+        self.assertRaises(ValueError, parsers.BasicParser, self.conf)
 
     def test_perform(self):
         if(self.p is None):

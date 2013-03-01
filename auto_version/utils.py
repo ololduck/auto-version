@@ -17,7 +17,8 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
-import auto_version.styles
+import styles
+import dvcs
 
 
 def import_style(name):
@@ -27,8 +28,6 @@ def import_style(name):
     mod = __import__('auto_version.styles', fromlist=[name])
     klass = getattr(mod, name)
     return klass
-
-from auto_version.dvcs import *
 
 
 def detect_vcs():
@@ -48,8 +47,8 @@ def detect_vcs():
     klass = None
     for el in dir_list:
         if(el == ".git"):
-            klass = Git
-            continue
+            klass = dvcs.Git
+            break
     return klass
 
 
