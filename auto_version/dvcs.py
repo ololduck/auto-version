@@ -76,7 +76,7 @@ class Git(BaseVCS):
             pass
 
     def _get_describe(self, increment=True):
-        s = check_output(["git", "describe", "--tags", "--dirty"])
+        s = str(check_output(["git", "describe", "--tags", "--dirty"]))
         logger.debug(str(type(s)) + " " + s)
         self.status = [str(s) for s in s.strip('\n').split('-')]  # check_output returns bytes
         logger.debug("self.status = " + str(self.status))
